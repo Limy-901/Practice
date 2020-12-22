@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <title>h05.html</title> 
+		<style>
+		   table {width:50%}
+		   table, th, td {border:1px solid black;
+		   border-collapse: collapse; padding:10px; }
+		   <!-- 테이블태그의 너비를 화면의 50퍼센트로 지정. -->
+		   <!-- 테이블과 th, td태그에, 선두께는 1픽셀, 실선, 블랙색상  -->
+			<!--border-collapse:테이블 또는 셀의 테두리선 표시방법을 지정하는 속성입니다.-->
+			<!--collapse : 서로 이웃하는 테이블이나 셀의 테두리선을 겹쳐서 표현 합니다.-->
+			<!--separate : 기본값으로 서로 이웃하는 테이블이나 셀의 테두리선을 분리시켜 표현 합니다. -->
+			<!--외부 여백은 10픽셀 간격으로.-->
+		   border-spacing:10px;
+		   <!-- 표와 셀 테두리간의 간격은 10픽셀로  -->
+		</style>
+	</head>
+	<body>
+		<center>
+		   <h1>h05.html</h1>
+		   <p>
+		      <table>
+			     <tr>
+				    <th>이름</th>
+					<th>주소</th>					
+					<th>나이</th>
+				 </tr>
+				 <tr>
+				    <td>강감찬</td>
+					<td align="center">부산시</td>					
+					<td align="right">34</td>
+				 </tr>
+				 <tr>
+				    <td>이순신</td>
+					<td>광주시</td>					
+					<td>30</td>
+				 </tr>
+				 <tr>
+				    <td colspan="2" align="center">저장</td>
+					<!-- colspan="2", 2개를 셀병합함 ㅎ -->
+					<td>나머지</td>
+				 </tr>
+			  </table>
+		   </p>
+		</center>
+	</body>
+</html>
