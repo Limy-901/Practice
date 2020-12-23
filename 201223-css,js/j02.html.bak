@@ -9,7 +9,7 @@
 			   var j = 2;
 			   var k = ++i % j; // k = 11 % 2 이므로, 값은 1.
 			   // 산술: +, -, *, **, /, % 
-			   var name = "바뀐이름~";
+			   var name = "홍길동";
 			   document.getElementById('result').innerHTML= k+" "+name; 
 			   // 호출하면, 아이디가 result인 것을 찾아서,
 			   // 값을 k+" "+name 으로 바꿔준다.
