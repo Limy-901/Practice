@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <title>j05.html</title> 
+		<script>
+		// obj라는 객체는, name, addr, age, msg(심지어 메소드임)으로 이루어져 있고,
+		// msg를 호출하면, 담겨있는 속성값이 한번에 출력되는 객체임.
+		   var obj = {
+			   name: "이순신",
+			   addr: "서울시", 
+			   age: 25, 
+			   msg: function(){
+				   return this.name + " " + this.addr + " " + this.age; 
+			   }
+		   }
+		   
+        </script>
+	</head>
+	<body>
+		<center>
+		   <h1>주제</h1>
+		   <a href="javascript:alert(obj.msg())">호출</a>
+		</center>
+	</body>
+</html>

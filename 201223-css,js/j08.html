@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <title>j08.html</title>
+		<script>
+		    var animals1 = ["tiger", "lion", "rabbit", 10];
+			//리스트 만듦.
+			var animals2 = new Array("tiger2", "lion2", "rabbit2", 20);
+			// 다른방식으로 만듦.
+			animals2[1] = "mouse2";
+			// 값도 바꿀 수 있음.
+			var animalsObj = {a0:"tiger3", a1:"lion3", a2:"rabbit3", a3:30};
+			// map처럼 key, value 값 지정이 가능함!
+            
+			var f = function(){
+				var el = document.getElementById("pId");
+				//pid가 아이디인 값을 가져와서 el에 넣음.
+				//문단이었음.
+				
+				//el.innerHTML = "<font size='5' style='color:red'>"+animals2[1]+"</font>";
+				// 문단 > 애니멀즈2의  첫번째 값(mouse2)으로 바꿔줌.
+
+				//el.innerHTML = animals2;
+				//문단 > 애니멀즈2의 값으로 바꿔줌. >> tiger2,mouse2(값바뀜),rabbit2,20
+
+
+                //el.innerHTML = animals1[3] +  animals2[3];
+				// 3번째 인덱스 값을 더한 값을 보여줌. 10+20 = 30.
+
+                //animalsObj["a0"] = "호랑이";
+                //el.innerHTML = animalsObj["a0"];
+				// 원래 tiger 였는데, a0이라는 키값을 가진 밸류값을 호랑이로 바꿔줌.
+
+				//el.innerHTML = animals1[animals1.length-1];
+
+                /*text = "<ul>";
+				for(i=0; i<animals2.length; i++){
+					text += "<li>"+animals2[i]+"</li>";
+				}
+				//한번 값을 쭉 다 빼주고,
+
+				animals2.forEach(myFun);
+				//한번 더 빼줌.
+				text += "</ul>";
+				el.innerHTML = text;*/
+			}
+			function myFun(value){
+				text += "<li>"+value+"</li>";
+			}
+		</script>
+	</head>
+	<body>
+		<center>
+		   <h1>Array</h1>
+		   <p id="pId" align="left">
+		      문단1 
+		   </p>
+		   <a href="javascript:f()">클릭</a>
+		</center>
+	</body>
+</html>
