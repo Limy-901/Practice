@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pet.mvc.mapper.memberMapper">
+   <!-- 회원 가입 -->
+   <insert id="join" parameterType="member">
+      <!-- 회원 가입 Insert -->
+         INSERT INTO member
+         VALUES(member_seq.nextval,#{member_email},#{member_password},#{member_name},#{member_address}, sysdate)
+   </insert>
+   
+   <!-- 회원가입 이메일 중복체크 -->
+   <select id="mailChk" resultType="int">
+      SELECT COUNT(*)
+      FROM MEMBER
+      WHERE member_email = #{member_email}
+   </select>
+   
+   
+   <!-- 로그인 -->
+   <select id="login" resultType="pet.member.vo.MemberVO" parameterType="member">
+      SELECT *
+      FROM MEMBER
+      WHERE member_email = #{member_email}
+   </select>
+   
+   <!-- 마이페이지 본인확인 -->
+   <select id="mypage" resultType="pet.member.vo.MemberVO" parameterType="member">
+      SELECT *
+      FROM MEMBER
+      WHERE member_email = #{member_email}
+   </select>
+   
+   <!-- 마이페이지 회원정보 수정 -->
+   <update id="memberUpdateDo" parameterType="member">
+      UPDATE member 
+      WHERE member_number = #{member_number}
+   </update>
+   
+   <!-- 아이디 찾기 -->
+   <select id="emailFind" resultType="member" parameterType="member">
+      SELECT *
+      FROM MEMBER
+      WHERE member_email = #{member_email}
+   </select>
+   
+   <!-- 패스워드 찾기 -->
+   <select id="pwFind" resultType="member" parameterType="member">
+      SELECT *
+      FROM member
+      WHERE member_email = #{member_email}
+   </select>
+   
+   <!-- 패스워드 수정 -->
+   <update id="pwModify" parameterType="member">
+      UPDATE member
+      SET password = #{member_password}
+      WHERE member_number = #{member_number}
+   </update>
+   
+   <!-- 회원정보 전체 수정 -->
+   <update id="memberModify" parameterType="member">
+      UPDATE member SET
+      member_password = #{member_password},
+      member_name = #{member_name},
+      member_address = #{member_address}
+      WHERE member_number = #{member_number}
+   </update>
+   
+</mapper>

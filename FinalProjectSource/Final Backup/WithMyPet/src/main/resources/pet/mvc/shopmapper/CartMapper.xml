@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pet.mvc.shopmapper.CartMapper">
+	<select id="selectCountInCart" resultType="Cart" parameterType="long">
+	<![CDATA[
+	select * from CART where product_code=#{product_code}
+	]]>
+	</select>
+	<insert id="insertProductsInCart" parameterType="Cart">
+	<![CDATA[
+	insert into CART(CART_CODE,PRODUCT_CODE,MEMBER_NUMBER)
+	values(#{cart_code},#{product_code},#{member_number})
+	]]>
+	</insert>
+	
+</mapper>

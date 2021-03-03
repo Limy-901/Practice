@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pet.mvc.mapper.AdminMapper">
+	
+	<select id="getNewMember" resultType="long">
+		select count(*) from MEMBER where MEMBER_DATE=SYSDATE
+	</select>
+	
+	<select id="getTotalMember" resultType="long">
+		select count(*) from MEMBER
+	</select>
+	
+	<select id="getTodayIncome" resultType="long">
+		select nvl(sum(pay_totalpay),0) from pay where PAY_DATE=SYSDATE and PAY_STATUS='y'
+	</select>
+	
+	<select id="getTotalWalk" resultType="long">
+		select count(*) from WALK
+	</select>
+	
+	<select id="getTotalJoin" resultType="double">
+		select count(*) from WALK_JOIN
+	</select>
+	
+	<select id="getTodayWalk" resultType="long">
+		select count(*) from WALK where WALK_DATE=SYSDATE
+	</select>
+	
+	<select id="getTodayPay" resultType="long">
+		select count(*) from PAY where PAY_DATE=SYSDATE	
+	</select>
+	
+	<select id="getWeeklyData" resultType="WeeklyData">
+		SELECT C.날짜 AS week , NVL(SUM(A.횟수), 0) AS walk, nvl(sum(B.횟수),0) as sale
+		from
+		   (select to_char(WALK_DATE,'yyyy-mm-dd') as 산책일, count(*) 횟수
+		   from WALK 
+  <![CDATA[where WALK_DATE >=(SYSDATE-7) and WALK_DATE < SYSDATE
+		   group by to_char(WALK_DATE,'yyyy-mm-dd') 
+		   order by 산책일
+		) A, 
+		   (select to_char(PAY_DATE,'yyyy-mm-dd') as 판매일, count(*) 횟수
+		   from PAY 
+		   where PAY_DATE >=(SYSDATE-7) and PAY_DATE < SYSDATE 
+		   group by to_char(PAY_DATE,'yyyy-mm-dd') 
+		   order by 판매일
+		) B, 
+		(
+		   select to_char(SYSDATE - (LEVEL - 1), 'yyyy-mm-dd') as 날짜 
+		   from dual connect by level <= 7
+		) C 
+		where C.날짜 = A.산책일(+) and C.날짜 = B.판매일(+)]]>
+		group by C.날짜
+		order by C.날짜
+	</select>
+	
+	<select id="getNewMemList" resultType="member">
+		<![CDATA[select rownum, a.* from ((select * from member order by member_date desc) a) where rownum>=1 and rownum<5]]>
+	</select>
+	
+	<select id="getTotalMemberList" parameterType="memberListResult" resultType="member">
+		select * from (select ROWNUM rnum, a.* from (select * from MEMBER
+		<if test="keyword != null and !keyword.equals('')">
+			where 
+			MEMBER_EMAIL like '%'||#{keyword}||'%' or
+			MEMBER_NAME like '%'||#{keyword}||'%' or
+			MEMBER_ADDRESS like '%'||#{keyword}||'%' or
+			MEMBER_DATE like '%'||#{keyword}||'%'
+		</if>
+		) a) 
+		<![CDATA[where rnum>#{startRow} and rnum<=#{endRow}]]>
+	</select>
+	
+	<select id="memberTotalCount" resultType="long" parameterType="String">
+		select count(*) from
+		<if test="keyword != null and !keyword.equals('')">
+			(select * from MEMBER 
+				where
+				MEMBER_EMAIL like '%'||#{keyword}||'%' or
+				MEMBER_NAME like '%'||#{keyword}||'%' or
+				MEMBER_ADDRESS like '%'||#{keyword}||'%' or
+				MEMBER_DATE like '%'||#{keyword}||'%'
+			)
+		</if>
+		MEMBER
+	</select>
+	
+	<select id="getMemOptionData" resultType="memberOption" parameterType="Long">
+		<![CDATA[
+		select a.walk, b.sale, c.point 
+		from 
+			(select member_number as num, count(*) as walk from (select * from WALK where MEMBER_NUMBER=#{member_number}) a group by member_number) a,
+			(select member_number as num, count(*) as sale from (select * from pay left join orderlist on orderlist.order_code = pay.order_code where member_number=#{member_number}) group by member_number) b,
+			(select member_number as num, pet_walkpoint as point from pet_mypage where member_number=#{member_number}) c,
+			(select member_number as num from member where member_number=#{member_number}) d
+		where d.num = a.num(+) and d.num = b.num(+) and d.num = c.num(+)
+		]]>
+	</select>
+	
+	<select id="getNextWalks" resultType="Walk">
+		<![CDATA[select ROWNUM, a.* from 
+		(select * from WALK where WALK_DATE>SYSDATE order by WALK_DATE)a 
+		where ROWNUM>0 and ROWNUM<=8]]>
+	</select>
+	
+	<select id="getPreWalks" resultType="Walk">
+		<![CDATA[select ROWNUM, a.* from 
+		(select * from WALK where WALK_DATE<SYSDATE 
+		order by WALK_DATE desc)a where ROWNUM>0 and ROWNUM<=8]]>
+	</select>
+	
+	<select id="getNotAnsweredQ" resultType="Board">
+		select A.* from 
+		<![CDATA[(select * from BOARD where BOARD_IDX=5) A 
+		left join 
+		(select * from BOARD_CMT where BOARD_IDX=5) B
+		on A.POST_IDX = B.POST_IDX
+		where B.POST_IDX is null]]>
+	</select>
+	
+	<insert id="writeAnswer" parameterType="map">
+		insert into BOARD_CMT values(BOARD_CMT_SEQ.nextval,#{idx},5,1,#{content},'관리자',SYSDATE)
+	</insert>
+	
+	<select id="getAnsweredQ" resultType="Qna" parameterType="map">
+		select ROWNUM, a.*, b.* from BOARD a , BOARD_CMT b where
+		<if test="keyword != null and !keyword.equals('')">
+			(POST_WRITER like '%'||#{keyword}||'%' or
+			POST_SUBJECT like '%'||#{keyword}||'%' or
+			CONTENT like '%'||#{keyword}||'%' or
+			CMT_CONTENT like '%'||#{keyword}||'%') and
+		</if>
+		<![CDATA[ a.POST_IDX = b.POST_IDX and a.BOARD_IDX=5 and b.BOARD_IDX=5
+		and ROWNUM>0 and ROWNUM<=5]]>
+	</select>
+	
+	<select id="getMemWalkChart" resultType="memberWalkChart" parameterType="long">
+		select a.member_number, a.count, b.recent, c.jcount from
+		(select member_number, count(*) count from walk group by member_number) a,
+		<![CDATA[(select max(walk_date) recent from walk where walk_date<SYSDATE) b,
+		(select count(*) jcount from walk_join left join walk on (walk.walk_idx = walk_join.walk_idx)) c
+		where member_number = #{member_number}]]>
+	</select>
+	
+	<select id="getChartList" resultType="memberWalkChart">
+		select a.member_number, member_name from 
+		(select member_number, count(*) total from walk group by member_number order by total desc) a 
+		<![CDATA[left join member on (a.member_number = member.member_number)
+		where ROWNUM>0 and ROWNUM<=5]]>
+	</select>
+	
+	<select id="getLocationList" resultType="memberWalkChart">
+		select ROWNUM, value.* from 
+		(select  a.*, b.recent, c.jcount from 
+		(select walk_location, count(*) count from walk group by walk_location) a,
+		<![CDATA[(select walk_location, max(walk_date) recent from walk where walk_date<SYSDATE group by walk_location) b,
+		(select walk.walk_location, count(*) jcount from walk_join left join walk on (walk.walk_idx = walk_join.walk_idx) group by walk.walk_location) c
+		where a.walk_location = b.walk_location(+) and a.walk_location = c.walk_location(+) and b.recent is not null
+		order by a.count desc) value
+		where ROWNUM>0 and ROWNUM<=5]]>
+	</select>
+	
+
+</mapper>

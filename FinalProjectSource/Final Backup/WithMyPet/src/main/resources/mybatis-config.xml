@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<settings> <setting name="jdbcTypeForNull" value="NULL" /> </settings>
+   <typeAliases>
+   	   <typeAlias alias="Walk" type="pet.walk.vo.Walk"/>
+   	   <typeAlias alias="WalkListVo" type="pet.walk.vo.WalkListVo"/>
+   	   <typeAlias alias="WalkComment" type="pet.walk.vo.Comment"/>
+   	   <typeAlias alias="joinVo" type="pet.walk.vo.joinVo"/>
+   	   
+   	   <typeAlias alias="Option" type="pet.mvc.shopdomain.Option"/>
+   	   <typeAlias alias="Cart" type="pet.mvc.shopdomain.Cart"/>
+	   <typeAlias alias="Review" type="pet.mvc.shopdomain.Review"/>
+	   <typeAlias alias="Category" type="pet.mvc.shopdomain.Category"/>
+	   <typeAlias alias="Product" type="pet.mvc.shopdomain.Product"/>
+	   <typeAlias alias="ProductVo" type="pet.mvc.shopdomain.ProductVo"/>
+   	   <typeAlias alias="ProductListResult" type="pet.mvc.shopdomain.ProductListResult"/>
+   	   
+		   	   
+   	   <typeAlias type="pet.mvc.board.Board" alias="Board"/>
+	   <typeAlias type="pet.mvc.board.BoardVo" alias="BoardVo"/>
+		<typeAlias type="pet.mvc.board.BoardListResult" alias="BoardListResult"/>
+		<typeAlias type="pet.mvc.board.BoardCmt" alias="BoardCmt"/>
+		
+		<typeAlias alias="member" type="pet.member.vo.MemberVO"/>
+		
+		<typeAlias alias="WeeklyData" type="pet.admin.vo.WeeklyData"/>
+		<typeAlias alias="memberListResult" type="pet.admin.vo.MemListResult"/>
+		<typeAlias alias="memberOption" type="pet.admin.vo.MemberOption"/>
+		<typeAlias alias="Qna" type="pet.admin.vo.Qna"/>
+		
+		<typeAlias alias="memberWalkChart" type="pet.admin.vo.MemberWalkChart"/>
+   	   
+   </typeAliases>
+   
+   <mappers>
+   		<mapper resource="pet/mvc/mapper/IndexMapper.xml"/>
+   		<mapper resource="pet/mvc/mapper/WalkMapper.xml"/>
+   		<mapper resource="pet/mvc/shopmapper/ProductMapper.xml"/>
+	<mapper resource="pet/mvc/shopmapper/CartMapper.xml"/>
+   		
+   		
+   </mappers>
+</configuration>

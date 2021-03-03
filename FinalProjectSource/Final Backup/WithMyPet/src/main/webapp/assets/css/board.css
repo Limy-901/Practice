@@ -1,0 +1,291 @@
+#content {
+    margin-left: 180px;
+    margin-right: 210px;
+    padding-left: 9px;
+    padding-right: 9px;
+    font-size: 0.8em;
+    line-height: 1.6;
+}
+
+
+.bbs-table {
+	letter-spacing: 1px;
+    width: 800px;
+    align:center;
+    margin-top: 130px;
+    font-size: 12px;
+    margin-left:10%;
+    background: fff;
+    
+}
+.bbs-table th {
+    color: rgb(92, 92, 92);
+    border-bottom: 1px solid rgb(192, 192, 192);
+}
+#t1{
+	text-align: center;
+}
+
+.bbs-table td {
+    padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgb(192, 192, 192);
+	line-height: 1.45;
+
+}
+.bbs-table td a {
+    color: #555;
+    text-decoration: none;
+}
+.bbs-table td a:hover {
+    color:rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+#paging {
+    text-align: center;
+    font-size: 13px;
+}
+#paging > a {
+    color: #555;
+    text-decoration: none;
+}
+#paging > a:hover {
+    color: #555;
+
+}
+
+.bbs-strong {
+    color: #FFA500;
+    font-weight: bold;
+}
+
+#list-menu {
+    text-align: center;
+}
+
+#search {
+    text-align: center;
+    
+}
+
+.btn {
+	border: 1px solid #000;
+	background: #000;
+	color: #fff;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	transform: translateY(1px);
+	transition: all 0.3s;
+	font-size: 0.7em;
+	text-decoration: none;
+}
+
+.qna {
+	width: 77px;height: 106px;
+    padding: 10px;	
+	
+}
+body{
+	 margin: 300;
+	 font: 12px "Malgun Gothic", Malgun Gothic, Malgun Gothic;
+}
+.btn{
+	border: 1px solid #000;
+	background: #000;
+	color: #fff;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	transform: translateY(1px);
+	transition: all 0.3s;
+	font-size: 1em;
+	text-decoration: 	none;
+}
+
+.navigation-login{
+	background-color: black;
+	font-size: 3rem;
+	font-weight: 700;
+}
+.container-menu{
+	margin:15px;
+}
+a {
+  text-decoration: none;
+  text-color: #ffffff;
+  margin:10px;
+  
+  
+}
+.boardtitle{
+	margin-left: 50px;
+	margin-top: 130px;
+}
+.menubar{
+	 list-style-type: none;
+	 top: 0px;
+	 bottom: 0px;
+	 position: fixed;
+     margin: 0;
+     padding: 0;
+     width: 17%;
+     background-color: #f1f1f1;
+ 	display: block;
+}
+.sidemenu {
+    margin: 0;
+    padding: 0;
+    margin-top: 40px;
+    font-size: 16px;
+	font-weight: lighter;
+	margin-left: 40px;
+
+}
+.title{
+	margin-top: 150px;
+	margin-left: 320px;
+	
+}
+.pt-lg-3, .py-lg-3 {
+    padding-top: 1rem !important;
+    margin-top: 300px;
+}
+.navbar {
+    padding: 0;
+    margin: 10px;
+}
+.tbody {
+    margin-top: 100px;
+    width: 800px;
+    height: 400px;
+}
+body{
+	
+	margin-top: 200px;
+}
+.header{
+	position: absolute;
+	margin-top: 50px;
+	z-index: 1;
+	background: #f7f7f7;
+	
+	padding: 40px 30px;
+	transition: all 0.5s ease 0s;
+	border-radius: var(--border-radius);
+	background-color: var(--bg-color);
+	position: relative;
+	margin-bottom: 30px;
+	margin-left: 25%;
+	font-size:16px;
+	border: 1px solid #dedede;
+	width: 55%;
+	white-space:nowrap;
+}
+.cont{
+	margin-top:10px;
+	margin-left:25%;
+	padding: 40px 30px;
+	transition: all 0.5s ease 0s;
+	border-radius: var(--border-radius);
+	background-color: var(--bg-color);
+	position: relative;
+	border: 1px solid #dedede;
+	height: 400px;
+	width: 55%;
+}
+.user{
+	font-size:14px;
+}
+.date{
+	font-size:14px;
+	margin-top: -19px;
+	margin-left: 84px;
+}
+.hit{
+	font-size:14px;
+	margin-top: -18px;
+	margin-left: 168px;
+	
+}
+.sub{
+	font-size: 18px;
+	margin-bottom: 7px;
+	margin-top: 5px;
+	font-weight: 600;
+}
+.reply{
+	font-size:14px;
+	margin-top:10px;
+	margin-left:25%;
+	padding: 40px 30px;
+	transition: all 0.5s ease 0s;
+	border-radius: var(--border-radius);
+	background-color: var(--bg-color);
+	position: relative;
+	border: 1px solid #dedede;
+	height: 200px;
+	width: 55%;
+}
+.replyfirstsec{
+	border-radius: var(--border-radius);
+    background-color: #f4f4f4;
+    position: relative;
+    border: 1px solid #dedede;
+    padding: 15px;
+    margin-top: -30px;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+.replysecondsec{
+	margin-top: 10px;
+	font-size: 12px;
+}
+.replywriter{
+	margin-bottom: -7px;
+	font-size: 14px;
+	font-weight:600
+}
+.writecomment{
+	font-size: 10px;
+	margin-top: 40px;
+}
+.modify{
+	font-size: 12px;
+	margin-left: 90%;
+	margin-top:-15px;
+}
+.delete{
+	font-size: 12px;
+	margin-left: 95%;
+	margin-top: -16px;
+	border-left: 1px solid #d2d2d2;
+	padding-left: 10px;
+}
+.search{
+	margin-left:42%;
+}
+.page{
+	margin-left:500px;
+}
+.writeReple{
+    margin-left: 26.4%;
+	margin-top: 3%;
+	width: 52.3%;
+}
+.cantWriteReple{
+	margin-left: 45%;
+	margin-top: 2%;
+}
+.modi{
+	margin-left: 88%;
+	margin-top: 27%;
+}
+.del{
+	font-size: 12px;
+	margin-left: 94%;
+	margin-top: -16px;
+	border-left: 1px solid #d2d2d2;
+	padding-left: 10px;
+	
+	
+}

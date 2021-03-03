@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pet.mvc.mapper.WalkMapper">
+	
+	<select id="getList" resultType="Walk" parameterType="WalkListVo">
+		select * from (select ROWNUM rnum, a.* from (select * from WALK where WALK_DATE > SYSDATE 
+		
+		<if test="keyword != null and !keyword.equals('')">
+			<choose>
+				<when test="orderType.equals('all')">
+				and ((WALK_SUBJECT like '%'||#{keyword}||'%')
+				or (WALK_LOCATION like '%'||#{keyword}||'%')
+				or (WALK_CONTENT like '%'||#{keyword}||'%'))
+				</when>
+				<when test="orderType.equals('location')">
+				and WALK_LOCATION like '%'||#{keyword}||'%'
+				</when>
+				<when test="orderType.equals('subejct')">
+				and WALK_SUBJECT like '%'||#{keyword}||'%'
+				</when>
+				<otherwise>
+				and WALK_CONTENT like '%'||#{keyword}||'%'
+				</otherwise>
+			</choose>
+		</if>
+		 order by WALK_DATE) a
+		) where <![CDATA[ rnum>#{startRow} and rnum<=#{endRow} ]]>
+	</select>
+	
+	<select id="totalWalk" resultType="Long" parameterType="map">
+	  select count(*) from
+	    <if test="keyword != null and !keyword.equals('')">
+	  		(select * from WALK where
+	  		 WALK_DATE > SYSDATE and
+			 ((WALK_LOCATION like '%'||#{keyword}||'%') or (WALK_SUBJECT like '%'||#{keyword}||'%'))
+			)
+		</if>
+		WALK where WALK_DATE > SYSDATE
+	</select>
+	
+	<insert id="insertWalk" parameterType="Walk" >
+    	insert into WALK values(
+	    walk_SEQ.nextval,#{member_number},#{walk_writer},#{walk_type},#{walk_subject}, 
+	    #{walk_content},SYSDATE,#{walk_count},#{walk_location},#{walk_date})
+    </insert>
+    
+    <select id="getWalk" resultType="Walk" parameterType="long">
+     	select * from WALK where WALK_IDX=#{idx}
+    </select>
+    
+    <select id="getWalkCmt" resultType="WalkComment" parameterType="Long">
+    	select * from WALK_CMT where WALK_IDX=#{idx} and JOIN_STATUS is null
+    </select>
+    
+    <select id="getWalkCmtData" resultType="WalkComment" parameterType="Long">
+    	select * from WALK_CMT where WALK_CMT_IDX=#{idx}
+    </select>
+    
+    <delete id="walkDelete" parameterType="Long">
+    	delete from WALK where WALK_IDX=#{idx}
+    </delete>
+    
+    <insert id="insertWalkCmt" parameterType="WalkComment">
+    	insert into WALK_CMT values(
+	    WALK_CMT_SEQ.nextval, #{walk_idx}, #{walk_cmt_writer},
+	    #{walk_cmt_content}, SYSDATE, #{member_number},null)
+    </insert>
+    
+    <update id="walkUpdate" parameterType="Walk">
+	   update WALK set WALK_TYPE=#{walk_type}, WALK_SUBJECT=#{walk_subject}, WALK_CONTENT=#{walk_content},
+	   WALK_LOCATION=#{walk_location}, WALK_DATE=#{walk_date}
+	   where WALK_IDX=#{walk_idx}
+	</update>
+	
+	<insert id="insertWalkJoin" parameterType="joinVo">
+    	insert into WALK_JOIN values(#{walk_idx}, #{member_number})
+    </insert>
+    
+    <select id="selectByCmtIdx" parameterType="long" resultType="long">
+    	select MEMBER_NUMBER from WALK_CMT where WALK_CMT_IDX=#{cmtIdx}
+    </select>
+    
+    <update id="updateWalkCmt" parameterType="long">
+    	update WALK_CMT set JOIN_STATUS='y' where WALK_CMT_IDX=#{cmtIdx}
+    </update>
+    
+    <select id="getJoinCmt" parameterType="long" resultType="WalkComment">
+    	select * from WALK_CMT where WALK_IDX=#{idx} and JOIN_STATUS='y'
+    </select>
+    
+    <select id="getWalkLike" parameterType="long" resultType="int">
+    	select count(*) from walk_like where WALK_IDX=#{idx}
+    </select>
+    
+    <insert id="addHeart" parameterType="joinVo">
+    	insert into WALK_LIKE values( #{walk_idx}, #{member_number} )
+    </insert>
+    
+    <select id="checkJoin" parameterType="joinVo" resultType="int">
+    	select count(*) from WALK_JOIN where WALK_IDX=#{walk_idx} and MEMBER_NUMBER=#{member_number}
+    </select>
+    
+    <select id="checkCmt" parameterType="joinVo" resultType="int">
+    	select count(*) from WALK_CMT where WALK_IDX=#{walk_idx} and MEMBER_NUMBER=#{member_number}
+    </select>
+
+</mapper>

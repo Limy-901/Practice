@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pet.mvc.mapper.BoardMapper">
+	<select id="selectPerPage" resultType="Board" parameterType="BoardVo">
+	    <![CDATA[ 
+	    select * from (select ROWNUM rnum, aa.* from (select * from BOARD order by POST_IDX desc) aa) 
+	  where rnum>#{startRow} and rnum<=#{endRow}]]>
+	  
+	  
+	</select>
+		
+	<select id="selectByCatgo" resultType="Board" parameterType="BoardVo" >
+	<![CDATA[ 
+	select * from (select ROWNUM rnum, aa.* 
+	from (select * from BOARD where ${catgo} like '%'||#{keyword}||'%' order by ${catgo}) aa) 
+	  where rnum>#{startRow} and rnum<=#{endRow}
+	]]>
+	</select>
+	
+	<select id="selectBySeq" parameterType="long" resultType="Board">
+	    select * from board where board.post_idx=#{post_idx}
+	</select>   
+	
+	
+	<select id="selectPostTime" parameterType="long" resultType="String">
+		SELECT ROUND((#{post_date}-sysdate)*24*60) FROM board where post_idx=#{post_idx}
+	</select>	
+		
+	<select id="selectCmtBySeq" parameterType="long" resultType="BoardCmt">
+		select * from board_cmt where post_idx=#{post_idx} order by cmt_date desc
+	</select>
+		
+	<select id="selectCount" resultType="long">
+		select count(POST_IDX) from BOARD
+	</select>
+	<select id="selectCountByCatgo" resultType="long" parameterType="BoardVo">
+		select count(POST_IDX) from BOARD where ${catgo} like '%'||#{keyword}||'%'
+	</select>	
+		
+		
+		
+	<insert id="insert" parameterType="Board">
+
+		insert into BOARD(post_idx, board_idx, post_writer, post_subject, content, post_date)
+		 values(board_seq.nextval, #{board_idx}, 
+		 #{post_writer, jdbcType=VARCHAR}, #{post_subject, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, sysdate)
+		
+	</insert>
+	
+	<delete id="delete" parameterType="long">
+		
+	    delete from BOARD where POST_IDX=#{post_idx}
+    </delete>
+       
+    <update id="update" parameterType="Board">
+    	update board set post_subject=#{post_subject}, content=#{content}
+    	where post_idx=#{post_idx}
+    </update>
+    
+    <update id="updateCount" parameterType="long">
+    	UPDATE BOARD SET post_count=post_count+1 WHERE post_idx=#{post_idx}
+    </update>
+    
+    <insert id="insertCmt" parameterType="BoardCmt">
+    INSERT INTO board_cmt(comment_idx, cmt_writer, post_idx, board_idx, cmt_content, cmt_date) 
+    VALUES(BOARD_CMT_SEQ.NEXTVAL, #{cmt_writer}, #{post_idx, jdbcType=INTEGER}, #{board_idx}, #{cmt_content}, sysdate)
+	</insert>
+	
+	
+	<delete id="deleteCmt" parameterType="long">
+		delete from board_cmt where comment_idx=#{comment_idx}
+	</delete>
+	
+	<update id="updateCmt" parameterType="BoardCmt">
+		update board_cmt set cmt_content=#{cmt_content}
+	</update>
+	
+
+	
+	</mapper>
