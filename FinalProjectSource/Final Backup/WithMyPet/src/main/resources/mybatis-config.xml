@@ -30,17 +30,18 @@
 		<typeAlias alias="memberListResult" type="pet.admin.vo.MemListResult"/>
 		<typeAlias alias="memberOption" type="pet.admin.vo.MemberOption"/>
 		<typeAlias alias="Qna" type="pet.admin.vo.Qna"/>
-		
 		<typeAlias alias="memberWalkChart" type="pet.admin.vo.MemberWalkChart"/>
+		
+		<typeAlias alias="msg" type="pet.message.vo.Msg"/>
    	   
    </typeAliases>
    
    <mappers>
-   		<mapper resource="pet/mvc/mapper/IndexMapper.xml"/>
-   		<mapper resource="pet/mvc/mapper/WalkMapper.xml"/>
-   		<mapper resource="pet/mvc/shopmapper/ProductMapper.xml"/>
-	<mapper resource="pet/mvc/shopmapper/CartMapper.xml"/>
-   		
-   		
+   		<mapper resource="pet/mvc/mapper/MessageMapper.xml"/>
+   		<mapper resource="pet/mvc/mapper/AdminMapper.xml"/>
+  		<mapper resource="pet/mvc/mapper/IndexMapper.xml"/>
+  		<mapper resource="pet/mvc/mapper/WalkMapper.xml"/>
+  		<mapper resource="pet/mvc/shopmapper/ProductMapper.xml"/>
+		<mapper resource="pet/mvc/shopmapper/CartMapper.xml"/>
    </mappers>
 </configuration>

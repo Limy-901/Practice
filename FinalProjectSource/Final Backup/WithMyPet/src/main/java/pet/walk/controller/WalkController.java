@@ -57,10 +57,10 @@ public class WalkController {
 		}
 		session.setAttribute("keyword", keyword);
 		WalkListResult list = walkService.getListS(cp,5,searchType,keyword);
-		ModelAndView mv = new ModelAndView("pet/walklist","list",list);
+		ModelAndView mv = new ModelAndView("walk/walklist","list",list);
 		if(list.getList().size() == 0) {
 			if(cp>1) return new ModelAndView("redirect:list.do?cp="+(cp-1));
-			else return new ModelAndView("pet/walklist","list",null);
+			else return new ModelAndView("walk/walklist","list",null);
 		}else {
 			return mv;
 		}
@@ -73,6 +73,7 @@ public class WalkController {
 		walkService.insertWalk(dto);
 		return "redirect:list.do";
 	}
+
 	
 	
 	@GetMapping(value="apply.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -82,8 +83,6 @@ public class WalkController {
 		dto.setWalk_cmt_writer(walk_cmt_writer);
 		dto.setWalk_cmt_content(walk_cmt_content);
 		boolean flag = walkService.insertWalkCmt(dto);
-		log.info("�����"+flag);
-		log.info("dto"+dto.getMember_number());
 		if(flag) {
 			try {
 				String receiver = "misty901@naver.com";
@@ -108,7 +107,7 @@ public class WalkController {
 	public ModelAndView update(long idx) {
 		Walk dto = walkService.getWalk(idx);
 		log.info(dto);
-		ModelAndView mv = new ModelAndView("pet/walkUpdate","content",dto);
+		ModelAndView mv = new ModelAndView("walk/walkUpdate","content",dto);
 		return mv;
 	}
 	
@@ -126,7 +125,6 @@ public class WalkController {
 	
 	@GetMapping(value="getMemberData.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Comment getCmtMember(long idx, HttpServletResponse response) {
-		
 		Comment dto = walkService.getWalkCmtData(idx);
 		return dto;
 	}
@@ -143,7 +141,7 @@ public class WalkController {
 		map.put("day",day);
 		map.put("time",time);
 		map.put("dto",dto);
-		ModelAndView mv = new ModelAndView("pet/walkblog","content",map);
+		ModelAndView mv = new ModelAndView("walk/walkblog","content",map);
 		return mv;
 	}
 	
@@ -157,7 +155,6 @@ public class WalkController {
 	
 	@GetMapping(value="join.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody CmtVo join(Long joinIdx, Long joinWalkIdx, HttpServletResponse response) {
-		log.info(joinIdx+"�̰Ŷ�, "+joinWalkIdx);
 		long memberNo = walkService.selectByCmtIdx(joinIdx);
 		joinVo vo = new joinVo(joinWalkIdx,memberNo);
 		boolean flag = walkService.insertWalkJoin(vo,joinIdx);
@@ -169,7 +166,7 @@ public class WalkController {
 	
 	@RequestMapping("post.do")
 	public String walkpost() {
-		return "/pet/walkpost";
+		return "/walk/walkpost";
 	}
 	
 	@GetMapping(value="search.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})

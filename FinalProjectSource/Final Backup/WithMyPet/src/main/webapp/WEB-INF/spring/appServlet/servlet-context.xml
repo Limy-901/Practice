@@ -3,15 +3,26 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
+	
+	<!-- WebSocket Handler  -->
+	<beans:bean id="replyEchoHandler" class="pet.message.vo.msgEchoHandler"/>
+	<websocket:handlers>
+		<websocket:mapping handler="replyEchoHandler" path="/replyEcho"/>
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+	<!-- WebSocket Handler  -->
 
+	 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/assets/**" location="/assets/" />
 	<resources mapping="/assets/js/**" location="/assets/js/" />
@@ -19,6 +30,7 @@
 	<resources mapping="/assets/images/**" location="/assets/images/" />
 	<resources mapping="/assets/fonts/**" location="/assets/fonts/" />
 	
+
 	<!-- 메일 전송 -->
 	<beans:bean id='Mailer' class="pet.walk.vo.Mailer">
 		<beans:property name="host" value="smtp.naver.com" />
@@ -51,7 +63,7 @@
 	<context:component-scan base-package="pet.member.controller" />
 	<context:component-scan base-package="pet.admin.controller" />
 	<context:component-scan base-package="pet.walk.controller" />
-	
+	<context:component-scan base-package="pet.message.controller" />
 	
 	
 </beans:beans>

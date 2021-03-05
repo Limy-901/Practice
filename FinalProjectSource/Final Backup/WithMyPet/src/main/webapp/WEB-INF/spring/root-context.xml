@@ -61,9 +61,12 @@
 	<context:component-scan base-package="pet.member.dao" />
 	<mybatis-spring:scan base-package="pet.member.mapper"/>
 	
+	<context:component-scan base-package="pet.message.service" />
 	<context:component-scan base-package="pet.admin.service" />
 	<context:component-scan base-package="pet.walk.service" />
+	<context:component-scan base-package="pet.message.mapper"/>
 	<context:component-scan base-package="pet.mvc.mapper"/>
-	<mybatis-spring:scan base-package="pet.mvc.mapper"/>	
+	<mybatis-spring:scan base-package="pet.mvc.mapper"/>
+		
 		
 </beans>

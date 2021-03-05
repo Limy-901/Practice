@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-	import="java.text.SimpleDateFormat, java.util.Date, pet.mvc.walk.Walk, java.util.ArrayList"%>
+	import="java.text.SimpleDateFormat, java.util.Date, pet.walk.vo.Walk, java.util.ArrayList"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 

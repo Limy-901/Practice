@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pet.mvc.mapper.MessageMapper">
+
+	<select id="getAllMsgList" resultType="msg" parameterType="long">
+		select * from MESSAGE natural join MEMBER where MEMBER_NUMBER = #{member_number}
+	</select>
+	
+	<select id="getMsgList" resultType="msg" parameterType="map">
+		select * from MESSAGE where MEMBER_NUMBER = #{member_number} and SENDER_NUMBER = #{sender_number}
+	</select>
+	
+	<insert id="insertMsg" parameterType="msg">
+		insert into MESSAGE values(msg_seq.nextval(), #{member_number}, #{sender_number}, #{msg_content}, null, SYSDATE)
+	</insert>
+
+</mapper>

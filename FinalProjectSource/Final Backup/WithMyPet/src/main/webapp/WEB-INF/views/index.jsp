@@ -101,9 +101,13 @@
                               <i class="gg-sun"></i>
                               <i class="gg-moon"></i>
                           </div>
+                          
                       </label>
                   </div>
               </nav>
+          </div>
+          <div>
+          	<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
           </div>
           <!-- //toggle switch for light and dark theme -->
       </nav>
