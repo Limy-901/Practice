@@ -30,7 +30,6 @@
 	<!--  트랜잭션 어노테이션 쓰기 -->
 	<tx:annotation-driven />
 	
-	
 
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
 		destroy-method="close">
@@ -50,7 +49,6 @@
 	<context:component-scan base-package="pet.mvc.shopdomain" />
 	<context:component-scan base-package="pet.mvc.shopmapper"/>
 	<mybatis-spring:scan base-package="pet.mvc.shopmapper"/>	
-	
 	<context:component-scan base-package="pet.mvc.board"/>
 	
 	<context:component-scan base-package="pet.mvc.service" />

@@ -1,5 +1,7 @@
 package pet.message.service;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 import pet.message.vo.Msg;
 import pet.message.vo.MsgListResult;

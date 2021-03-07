@@ -9,7 +9,8 @@
 <title>:: 관리자 :: With My Pet</title>
 <link href="../assets/css/admin/style.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="../assets/plugins/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"></script>
 
 
 </head>
@@ -411,9 +412,6 @@ function checkBoard(idx){
     <script src="../assets/js/admin/settings.js"></script>
     <script src="../assets/js/admin/gleek.js"></script>
     <script src="../assets/js/admin/styleSwitcher.js"></script>
-    <script src="../assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 </body>
 </html>

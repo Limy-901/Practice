@@ -106,9 +106,11 @@
                   </div>
               </nav>
           </div>
-          <div>
-          	<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
-          </div>
+          <c:if test="${!empty login}">
+	          <div>
+	          	<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
+	          </div>
+          </c:if>
           <!-- //toggle switch for light and dark theme -->
       </nav>
   </div>

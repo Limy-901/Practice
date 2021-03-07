@@ -3,6 +3,7 @@ package pet.mvc.persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,6 +15,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import pet.admin.service.AdminService;
+import pet.message.service.MsgService;
+import pet.message.vo.Msg;
+import pet.message.vo.MsgListResult;
 import pet.mvc.mapper.AdminMapper;
 
 
@@ -23,8 +27,8 @@ import pet.mvc.mapper.AdminMapper;
 public class adminTests {
 	@Setter(onMethod_ = {@Autowired})
 	// 이렇게도 객체 주입을 한다. 
-	private AdminService adminService;
-	private AdminMapper adminmapper;
+	private MsgService service;
+	
 
 	/*
 	@Test
@@ -34,7 +38,8 @@ public class adminTests {
 	}*/
 	@Test
 	public void testWeekly() {
-		adminService.getTotalMemberList(1,"");
+		MsgListResult i = service.getAllMsgList(5);
+		log.info("###이거입니당~~" + i.getChatList());
 	}/*
 	@Test
 	public void check() {

@@ -15,6 +15,7 @@ import pet.member.vo.MemberVO;
 
 @Log4j
 public class msgEchoHandler extends TextWebSocketHandler {
+	
 	//현재 접속중인 모든 세션
 	List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
 	Map<String, WebSocketSession> userSessions = new HashMap<String, WebSocketSession>();
@@ -23,7 +24,7 @@ public class msgEchoHandler extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		//커넥션이 연결됐을때
 		String senderId = getId(session);//웹소켓세션안에 http세션에서 아이디값을 받아옴.
-		log.info("세션 연결 : "+senderId);
+		log.info("웹소켓 연결 : "+senderId);
 		sessions.add(session); // 접속될때마다 sessions에 담음.
 		userSessions.put(senderId, session);
 		
@@ -36,25 +37,27 @@ public class msgEchoHandler extends TextWebSocketHandler {
 		log.info("내 아이디 : "+senderId);
 		log.info("메세지 발송 : "+session+" , "+message);
 		
-		for (WebSocketSession sess: sessions) {
-			log.info(message);
-	  		log.info("send message ="+session); 
-	  		session.sendMessage(new TextMessage(senderId + " : " + message.getPayload())); // 나에게도 보이게.
-			sess.sendMessage(new TextMessage(senderId + " : " + message.getPayload())); // 서버가 메세지를받을때마다 모든 세션에 메시지 전송
-		}
-		//프로토콜 : cmd,보낸사람,받은사람,board_idx //  ex) msg,user1,user2,15
-		String msg = message.getPayload();
+//		for (WebSocketSession sess: sessions) {
+//			log.info(message);
+//	  		log.info("send message ="+session); 
+//	  		session.sendMessage(new TextMessage(senderId + " : " + message.getPayload())); // 나에게도 보이게.
+//			sess.sendMessage(new TextMessage(senderId + " : " + message.getPayload())); // 서버가 메세지를받을때마다 모든 세션에 메시지 전송
+//		}
+		
+		//프로토콜 : cmd,보낸사람,받은사람,board_idx //  ex) msg,user1,user2
+		String msg = message.getPayload(); //내가 받은 msg의 내용.
 		if (!msg.isEmpty()) {
 			String[] strs = message.getPayload().split(",");
-			if(strs != null && strs.length == 4) {
+			if(strs != null && strs.length == 3) {
 				String cmd = strs[0];
 				String sender = strs[1];
-				String receiver = strs[2];
-				String board_idx = strs[3]; 
 				
+				String receiver = strs[2];
+				
+				//수신자가 존재하면.
 				WebSocketSession receiverSession = userSessions.get(receiver);
 				if(cmd.equals("msg") && receiverSession != null) {
-					TextMessage tmsg = new TextMessage(sender+" 님이 "+board_idx+"번 글에 요청을 보냈습니다. ");
+					TextMessage tmsg = new TextMessage(sender+" 님이 메시지를 보냈습니다. "+"<a href='/msg/chat.do'>메시지 확인</a>");
 					receiverSession.sendMessage(tmsg);
 				}
 			}
