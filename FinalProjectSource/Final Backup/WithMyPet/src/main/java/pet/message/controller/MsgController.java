@@ -1,20 +1,13 @@
 package pet.message.controller;
 
-import java.io.IOException;
 import java.util.Hashtable;
-
 import javax.servlet.http.HttpSession;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import pet.member.vo.MemberVO;
@@ -45,16 +38,19 @@ public class MsgController {
 		}
 	}
 	
-	//메시지 상대 선택, ajax
+	//메시지 상대 선택, 해당 상대와의 메시지 읽음 처리, ajax
 	@GetMapping(value="selectChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Hashtable<String, Object> selectChat(HttpSession session, long sender_number) {
 		MemberVO vo = (MemberVO) session.getAttribute("login"); // 세션에서 로그인 정보 받기
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
 		MsgListResult msgLists = msgService.getAllMsgList(vo.getMember_number()); // 대화상대목록 업데이트
 		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 대화내용
+		// 메시지 읽음 처리.
+		long count = msgService.msgRead(vo.getMember_number(), sender_number);
 		map.put("msgLists",msgLists);
 		map.put("detailLists",detailLists);
 		map.put("senderNumber",sender_number);
+		map.put("unread",count);
 		return map;
 	}
 	
@@ -62,12 +58,31 @@ public class MsgController {
 	@GetMapping(value="sendChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Hashtable<String, Object> sendChat(HttpSession session, long sender_number, String msg_content) {
 		MemberVO vo = (MemberVO) session.getAttribute("login"); // 세션에서 로그인 정보 받기
-		Msg msg = new Msg(vo.getMember_number(), sender_number, msg_content);
-		msgService.insertMsg(msg);
+		if(msg_content != null && msg_content.length()>0) {
+			Msg msg = new Msg(vo.getMember_number(), sender_number, msg_content);
+			msgService.insertMsg(msg);
+		}
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
 		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 대화내용
 		map.put("detailLists",detailLists);
 		map.put("senderNumber",sender_number);
 		return map;
 	}
+	
+	//메시지 수신 시 1:1 대화창 갱신, ajax
+	@GetMapping(value="refreshChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public @ResponseBody Hashtable<String, Object> refreshChat(HttpSession session, long sender_number) {
+		Hashtable<String, Object> map = new Hashtable<String, Object>();
+		MemberVO vo = (MemberVO) session.getAttribute("login");
+		// 읽지 않은 수 갱신 (+)
+		long count = msgService.msgRead(vo.getMember_number(), sender_number);
+		session.setAttribute("unread", count);
+		// 대화 내용 갱신 (+)
+		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 대화내용
+		map.put("detailLists",detailLists);
+		map.put("senderNumber",sender_number);
+		map.put("unread",count);
+		return map;
+	}
+	
 }

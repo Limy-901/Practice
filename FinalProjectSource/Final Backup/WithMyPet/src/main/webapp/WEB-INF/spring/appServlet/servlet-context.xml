@@ -13,7 +13,7 @@
 	<annotation-driven />
 	
 	<!-- WebSocket Handler  -->
-	<beans:bean id="replyEchoHandler" class="pet.message.vo.msgEchoHandler"/>
+	<beans:bean id="replyEchoHandler" class="pet.message.controller.MsgEchoHandler"/>
 	<websocket:handlers>
 		<websocket:mapping handler="replyEchoHandler" path="/replyEcho"/>
 		<websocket:handshake-interceptors>

@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import lombok.extern.log4j.Log4j;
 import pet.member.service.MemberService;
 import pet.member.vo.MemberVO;
+import pet.message.service.MsgService;
 
+@Log4j
 @Controller
 @RequestMapping(value = "/member")
 public class LoginController {
@@ -27,27 +30,30 @@ public class LoginController {
    private MemberService service;
    
    @Inject()
+   private MsgService msgService;
+   
+   @Inject()
    private BCryptPasswordEncoder pwencoder;
    
    
-   //·Î±×ÀÎ
+   //ï¿½Î±ï¿½ï¿½ï¿½
    @RequestMapping(value = "/login.do", method = RequestMethod.GET)
    public String getLogin() throws Exception {
-      logger.info("login.do È£Ãâ¼º°ø");
+      logger.info("login.do È£ï¿½â¼ºï¿½ï¿½");
       return "member/login";
    }
    
-   // ·Î±×ÀÎ Ã³¸®
+   // ï¿½Î±ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
       @RequestMapping(value = "/login.do", method = RequestMethod.POST)
       public ModelAndView postLogin(@ModelAttribute("MemberVO") MemberVO lvo, HttpSession session, HttpServletRequest request) {
-         logger.info("·Î±×ÀÎ Ã³¸® ¼º°ø");
+         logger.info("ï¿½Î±ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
          
          ModelAndView mav = new ModelAndView();
          
          MemberVO vo = service.login(lvo);
          
          if(vo == null) {
-            mav.addObject("msg", "¾ÆÀÌµğ¸¦ Á¤È®È÷ ÀÔ·ÂÇØ ÁÖ¼¼¿ä.");
+            mav.addObject("msg", "ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½.");
             mav.setViewName("member/signup");
             return mav;
          }
@@ -56,21 +62,25 @@ public class LoginController {
          
          if (passMatch) {
         	 session.setAttribute("login", vo);
+        	 long member_number = vo.getMember_number();
+        	 long count = msgService.getUnreadMsg(member_number);
+        	 session.setAttribute("unread", count); // ì½ì§€ ì•Šì€ ë©”ì‹œì§€ ê°œìˆ˜ ì¹´ìš´íŠ¸
+        	 log.info("##ì•ˆì½ì€ ê°¯ìˆ˜"+count);
         	 mav.setViewName("member/mypage");
         	 return mav;
         	
          }else {
-            mav.addObject("msg", "ÆĞ½º¿öµå¸¦ Á¤È®È÷ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            mav.addObject("msg", "ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½å¸¦ ï¿½ï¿½È®ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.");
             mav.setViewName("member/agree");
             return mav;
          }
       }
       
       
-   //·Î±×¾Æ¿ô Ã³¸®
+   //ï¿½Î±×¾Æ¿ï¿½ Ã³ï¿½ï¿½
    @RequestMapping(value = "/logout.do")
    public String logout(HttpSession session, HttpServletRequest request) {
-      logger.info("logout.do È£Ãâ ¼º°ø");
+      logger.info("logout.do È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
       request.getSession().removeAttribute("login");
       session.removeAttribute("login");
       session.invalidate();
@@ -78,13 +88,13 @@ public class LoginController {
    }
    
    
-   //¾ÆÀÌµğ Ã£±â Ã¢
+   //ï¿½ï¿½ï¿½Ìµï¿½ Ã£ï¿½ï¿½ Ã¢
    @RequestMapping(value = "/idFind.do", method = RequestMethod.GET)
    public String getIdFind() throws Exception {
-      logger.info("idFind.do È£Ãâ ¼º°ø");
+      logger.info("idFind.do È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
       return "member/idFind";
    }
-   //ÆĞ½º¿öµå Ã£±â
+   //ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
    @RequestMapping(value = "/pwFind.do", method = RequestMethod.GET)
    public String getPwFind() throws Exception {
       logger.info("get pwFind");
@@ -92,7 +102,7 @@ public class LoginController {
    }
    
    
-   //ÆĞ½º¿öµå ¼öÁ¤
+   //ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
    @RequestMapping(value = "/pwModify.do", method = RequestMethod.GET)
    public String getPwModify() throws Exception {
       logger.info("get pwModify");
@@ -100,7 +110,7 @@ public class LoginController {
    }
    
    
-   //È¸¿ø ÆĞ½º¿öµå ¼öÁ¤
+   //È¸ï¿½ï¿½ ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
       @RequestMapping(value = "/memberPwdModify.do", method = RequestMethod.GET)
       public String getMemberPwModify() throws Exception {
          logger.info("get getMemberPwModify");
@@ -108,25 +118,25 @@ public class LoginController {
       }
       
       
-   //¾ÆÀÌµğ Ã£±â
+   //ï¿½ï¿½ï¿½Ìµï¿½ Ã£ï¿½ï¿½
    @RequestMapping(value = "/idFind.do", method = RequestMethod.POST)
    public String idFind(MemberVO vo, Model model) throws Exception {
-      logger.info("¾ÆÀÌµğ Ã£±â È£Ãâ");
+      logger.info("ï¿½ï¿½ï¿½Ìµï¿½ Ã£ï¿½ï¿½ È£ï¿½ï¿½");
       MemberVO mvo  = service.emailFind(vo);
       if(mvo != null) {
          model.addAttribute("mem",mvo);
          return "member/emailFindSuccess";
       }else {
-         model.addAttribute("msg","ÀÌ¸ŞÀÏÀ» Æ²¸®°Ô ÀÔ·Â ÇÏ¼Ì°Å³ª È¸¿øÀÌ ¾Æ´Õ´Ï´Ù");
+         model.addAttribute("msg","ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ Æ²ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Ï¼Ì°Å³ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½");
          return "member/emailFind";
       }
    }
    
    
-   // ÆĞ½º¿öµå Ã£±â
+   // ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
       @RequestMapping(value = "/pwFind.do", method = RequestMethod.POST)
       public ModelAndView pwFind(@ModelAttribute("MemberVO") MemberVO pvo, HttpSession session, HttpServletRequest request) {
-         logger.info("pwFind.do pwFind.do È£Ãâ ¼º°ø");
+         logger.info("pwFind.do pwFind.do È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
          ModelAndView mav = new ModelAndView();
          MemberVO vo = service.pwFind(pvo);
          if (vo != null) {
@@ -134,17 +144,17 @@ public class LoginController {
             mav.setViewName("member/pwModify");
             return mav;
          }else {
-            mav.addObject("msg", "¾ÆÀÌµğ¿Í ÀÌ¸ŞÀÏÀ» Á¤È®ÇÏ°Ô ÀÔ·ÂÇØÁÖ½Ã±æ ¹Ù¶ø´Ï´Ù.");
+            mav.addObject("msg", "ï¿½ï¿½ï¿½Ìµï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È®ï¿½Ï°ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö½Ã±ï¿½ ï¿½Ù¶ï¿½ï¿½Ï´ï¿½.");
             mav.setViewName("member/pwFind");
             return mav;
          }
       }
       
       
-   //ÆĞ½º¿öµå ¼öÁ¤
+   //ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
       @RequestMapping(value = "/pwModify.do", method = RequestMethod.POST)
       public String memberUpdate(@ModelAttribute MemberVO vo, HttpSession session) throws Exception {
-         logger.info("ÆĞ½º¿öµå º¯°æ ¼º°ø");
+         logger.info("ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
          String secPwd = pwencoder.encode(vo.getMember_password());
          vo.setMember_password(secPwd);
          service.pwModify(vo);

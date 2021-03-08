@@ -5,15 +5,16 @@
 <mapper namespace="pet.mvc.mapper.MessageMapper">
 
 	<select id="getAllMsgList" resultType="msg" parameterType="long">
-		select a.*, b.member_name sender_name from
-		 (select message.* from message where (sender_number, senddate) in 
-		  (select sender_number, max(senddate) from message natural join member 
-		  where sender_number != #{member_number}
-		  group by sender_number)
-		 order by senddate desc) a 
-		 inner join
-		(select member_number, member_name from member) b
-		<![CDATA[on(a.sender_number = b.member_number)]]>
+		select a.*, b.member_name sender_name, c.member_name member_name from
+		 (select message.* from message where (member_number, sender_number, senddate) in 
+		  (select member_number, sender_number, max(a.senddate) from 
+		  <![CDATA[(select * from message where member_number=#{member_number} or 
+		  sender_number=#{member_number}) a 
+		  group by sender_number,member_number)
+		 order by senddate desc) a,
+		(select member_number, member_name from member) b,
+        (select member_number, member_name from member) c
+		where a.sender_number = b.member_number and a.member_number = c.member_number]]>
 	</select>
 	
 	<select id="getMsgList" resultType="msg" parameterType="map">
@@ -32,5 +33,13 @@
 	<insert id="insertMsg" parameterType="msg">
 		insert into MESSAGE values(msg_seq.nextval, #{member_number}, #{sender_number}, #{msg_content}, null, SYSDATE)
 	</insert>
+	
+	<select id="getUnreadMsg" resultType="long" parameterType="long">
+		select count(*) from MESSAGE where SENDER_NUMBER = #{member_number} and OPENDATE is null
+	</select>
+	
+	<update id="msgRead" parameterType="map">
+		update MESSAGE set OPENDATE=SYSDATE where MEMBER_NUMBER=#{sender_number} and SENDER_NUMBER=#{member_number}
+	</update>
 
 </mapper>

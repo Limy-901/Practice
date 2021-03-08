@@ -10,4 +10,6 @@ public interface MsgService {
 	MsgListResult getAllMsgList(long member_number);
 	MsgListResult getMsgList(long member_number, long sender_number);
 	void insertMsg(Msg msg);
+	long getUnreadMsg(long member_number);
+	long msgRead(long member_number, long sender_number);
 }

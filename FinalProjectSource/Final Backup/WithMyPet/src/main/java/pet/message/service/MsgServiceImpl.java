@@ -17,17 +17,20 @@ import pet.mvc.mapper.MessageMapper;
 @Log4j
 public class MsgServiceImpl implements MsgService {
 	MessageMapper msgMapper;
-
+	
+	// 최근 대화목록 리스트
 	@Override
 	public MsgListResult getAllMsgList(long member_number) {
 		MsgListResult msgLists = new MsgListResult();
 		ArrayList<Msg> lists = msgMapper.getAllMsgList(member_number);
+		
 		getTimes(lists); // 지난 시간 구하기
 		msgLists.setChatList(lists);
 		return msgLists;
 		
 	}
 
+	// 1:1 주고받은 메시지 
 	@Override
 	public MsgListResult getMsgList(long member_number, long sender_number) {
 		MsgListResult msgList = new MsgListResult();
@@ -36,7 +39,8 @@ public class MsgServiceImpl implements MsgService {
 		msgList.setChatList(lists);
 		return msgList;
 	}
-
+	
+	// 메시지 insert (= 보내기)
 	@Override
 	public void insertMsg(Msg msg) {
 		log.info("## msg insert"+msg);
@@ -82,6 +86,21 @@ public class MsgServiceImpl implements MsgService {
         }
         sb.append(" 전");
         return(sb.toString());
+	}
+
+	// 읽지 않은 메시지 개수 카운트
+	@Override
+	public long getUnreadMsg(long member_number) {
+		long count = msgMapper.getUnreadMsg(member_number);
+		return count;
+	}
+	// 읽음 처리 후, 읽지 않은 메시지 카운트
+	@Override
+	public long msgRead(long member_number, long sender_number) {
+		log.info("###읽었어!"+member_number+", "+sender_number);
+		msgMapper.msgRead(member_number, sender_number);
+		long unread = getUnreadMsg(member_number);
+		return unread;
 	}
 
 }

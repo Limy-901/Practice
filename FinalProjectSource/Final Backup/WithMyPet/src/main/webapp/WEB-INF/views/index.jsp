@@ -108,7 +108,18 @@
           </div>
           <c:if test="${!empty login}">
 	          <div>
-	          	<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
+	          <c:choose>
+	          	<c:when test="${unread == 0}">
+	          		<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
+	          	</c:when>
+	          	<c:otherwise>
+	          		<i class="mdi mdi-bell-outline"></i>
+                    <span class="badge badge-pill gradient-2" style="position:absolute; margin-top:-1.3%; padding-left:1.6%;
+                     margin-right:2%; color:#ffb446;">${unread}</span>
+	          		<a href="/msg/chat.do"><img src="../assets/images/icon/colorMessage.png"></a>
+	          	</c:otherwise>
+	          </c:choose>
+	          	
 	          </div>
           </c:if>
           <!-- //toggle switch for light and dark theme -->
