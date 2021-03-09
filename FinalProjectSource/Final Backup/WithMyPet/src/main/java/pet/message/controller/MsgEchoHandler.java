@@ -58,7 +58,7 @@ public class MsgEchoHandler extends TextWebSocketHandler {
 				//수신자가 존재하면.
 				WebSocketSession receiverSession = userSessions.get(receiver);
 				if(cmd.equals("msg") && receiverSession != null) {
-					TextMessage tmsg = new TextMessage(sender+" 님이 메시지를 보냈습니다. ");
+					TextMessage tmsg = new TextMessage(sender);
 					receiverSession.sendMessage(tmsg);
 				}
 			}

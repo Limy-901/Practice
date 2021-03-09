@@ -6,15 +6,18 @@
 
 	<select id="getAllMsgList" resultType="msg" parameterType="long">
 		select a.*, b.member_name sender_name, c.member_name member_name from
-		 (select message.* from message where (member_number, sender_number, senddate) in 
-		  (select member_number, sender_number, max(a.senddate) from 
-		  <![CDATA[(select * from message where member_number=#{member_number} or 
-		  sender_number=#{member_number}) a 
-		  group by sender_number,member_number)
-		 order by senddate desc) a,
+		(SELECT MAX(MSG_IDX) KEEP ( DENSE_RANK FIRST ORDER BY MSG_IDX DESC) AS MSG_IDX
+		       , MAX(MEMBER_NUMBER) KEEP ( DENSE_RANK FIRST ORDER BY MSG_IDX DESC) AS MEMBER_NUMBER
+		       , MAX(SENDER_NUMBER) KEEP ( DENSE_RANK FIRST ORDER BY MSG_IDX DESC) AS SENDER_NUMBER
+		       , MAX(MSG_CONTENT) KEEP ( DENSE_RANK FIRST ORDER BY MSG_IDX DESC) AS MSG_CONTENT
+		       , MAX(SENDDATE) KEEP ( DENSE_RANK FIRST ORDER BY MSG_IDX DESC) AS SENDDATE
+		       , MAX(OPENDATE) KEEP ( DENSE_RANK FIRST ORDER BY MSG_IDX DESC) AS OPENDATE
+		FROM MESSAGE
+<![CDATA[WHERE MEMBER_NUMBER = #{member_number} OR SENDER_NUMBER = #{member_number}
+		GROUP BY GREATEST(MEMBER_NUMBER, SENDER_NUMBER) || LEAST(MEMBER_NUMBER, SENDER_NUMBER))a,
 		(select member_number, member_name from member) b,
-        (select member_number, member_name from member) c
-		where a.sender_number = b.member_number and a.member_number = c.member_number]]>
+		(select member_number, member_name from member) c
+		where a.SENDER_NUMBER = b.member_number and a.MEMBER_NUMBER = c.member_number]]>
 	</select>
 	
 	<select id="getMsgList" resultType="msg" parameterType="map">

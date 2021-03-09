@@ -47,10 +47,14 @@ public class MsgController {
 		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 대화내용
 		// 메시지 읽음 처리.
 		long count = msgService.msgRead(vo.getMember_number(), sender_number);
+   	    session.setAttribute("unread", count); // 읽지 않은 메시지 개수 카운트
+   	    log.info("##unread 갱신했어요"+count);
+   	 
 		map.put("msgLists",msgLists);
 		map.put("detailLists",detailLists);
 		map.put("senderNumber",sender_number);
 		map.put("unread",count);
+		map.put("myName",vo.getMember_name());
 		return map;
 	}
 	
@@ -64,24 +68,31 @@ public class MsgController {
 		}
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
 		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 대화내용
+		long count = msgService.msgRead(vo.getMember_number(), sender_number);
+		session.setAttribute("unread", count);
+		log.info("##unread 갱신했어요"+count);
 		map.put("detailLists",detailLists);
 		map.put("senderNumber",sender_number);
+		map.put("unread",count);
 		return map;
 	}
 	
 	//메시지 수신 시 1:1 대화창 갱신, ajax
 	@GetMapping(value="refreshChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Hashtable<String, Object> refreshChat(HttpSession session, long sender_number) {
+		log.info("##리프레쉬!!!"+sender_number);
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
 		MemberVO vo = (MemberVO) session.getAttribute("login");
 		// 읽지 않은 수 갱신 (+)
 		long count = msgService.msgRead(vo.getMember_number(), sender_number);
 		session.setAttribute("unread", count);
+		log.info("##unread 갱신했어요"+count);
 		// 대화 내용 갱신 (+)
 		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 대화내용
 		map.put("detailLists",detailLists);
 		map.put("senderNumber",sender_number);
 		map.put("unread",count);
+		log.info("##refresh 끝!!!"+map);
 		return map;
 	}
 	

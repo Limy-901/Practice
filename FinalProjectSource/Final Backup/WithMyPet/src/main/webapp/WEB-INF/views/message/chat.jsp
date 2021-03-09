@@ -10,10 +10,10 @@
 		<link rel="stylesheet" href="../assets/css/style-liberty.css">
 		<link rel="stylesheet" href="../assets/css/chat.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-  
+        <link rel="stylesheet" href="../assets/css/button/button.min.css">
+        <link rel="stylesheet" href="../assets/css/button/button.css">
 	</head>
 <body>
 <!--header-->
@@ -32,7 +32,7 @@
           <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul class="navbar-nav ml-auto">
                   <li class="nav-item active">
-                      <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="../">Home <span class="sr-only">(current)</span></a>
                   </li>
                   
                   <li class="nav-item dropdown">
@@ -101,7 +101,7 @@
 	          		<i class="mdi mdi-bell-outline"></i>
                     <span id="unreadCount" class="badge badge-pill gradient-2" style="position:absolute; margin-top:-1.3%; padding-left:1.6%;
                      margin-right:2%; color:#ffb446;">${unread}</span>
-	          		<a href="/msg/chat.do"><img src="../assets/images/icon/colorMessage.png"></a>
+	          		<div id="msgZone"><a href="/msg/chat.do"><img src="../assets/images/icon/colorMessage.png"></a></div>
 	          	</c:otherwise>
 	          </c:choose>
           </div>
@@ -154,8 +154,15 @@
 	                		<div class="last-message text-muted">${list.msg_content}</div>
 	                		<small class="time text-muted">${list.time}</small>
 	                		<c:choose>
-		                		<c:when test="${empty list.opendate}">
-		                			<small class="chat-alert label label-danger">1</small>
+	                			<c:when test="${list.sender_number eq login.member_number}">
+		                			<c:choose>
+				                		<c:when test="${empty list.opendate}">
+				                			<small class="chat-alert label label-danger">1</small>
+				                		</c:when>
+				                		<c:when test="${!empty list.opendate}">
+				                			<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>
+				                		</c:when>
+			                		</c:choose>
 		                		</c:when>
 		                		<c:otherwise>
 		                			<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>
@@ -169,6 +176,11 @@
 		</div>
 <script>
 function msgClick(idx){
+	var msg = $('#msgInput').val();
+	var sender = $('#senNo').val();
+	$('#senNo').val(idx);
+	var notMe;
+	
 	$.ajax({
 		url: "selectChat.do",
 	    type: 'GET',
@@ -177,40 +189,58 @@ function msgClick(idx){
 		    sender_number: idx
 		},
 	  success : function(map) {
-		$('#senNo').val(map.senderNumber);
 		if(map.length == 0){
 			alert("잘못된 상대입니다! 다른 상대를 선택해주세요.");
 			window.location.href = "#";
 		} else if (map.detailLists != 0) {
-			  
 			  $('#chatList').empty();
 			  var html1='';
 			  var html2='';
+			  var myName = '${login.member_name}';
+			  var myNo = '${login.member_number}';
+			  if(map.detailLists.chatList[0].member_name != myName){
+				  notMe = map.detailLists.chatList[0].member_name;
+			  }else{
+				  notMe = map.detailLists.chatList[0].sender_name;
+			  }
+			  $('#senName').text(notMe);
 			  for(var i = 0; i < map.msgLists.chatList.length; i++){
-				  if(map.msgLists.chatList[i].sender_number == map.senderNumber){
+			      if(map.msgLists.chatList[i].sender_number == map.senderNumber || map.msgLists.chatList[i].member_number == map.senderNumber) {
 					  html1 += '<li class="active bounceInDown">';
-	               	  html1 += '<a onclick="msgClick('+map.msgLists.chatList[i].sender_number+')" class="clearfix">';
+	               	  html1 += '<a class="clearfix">';
 			          html1 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">';
 			          html1 += '<div class="friend-name">';	
-			          html1 += '<strong>'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+			          if(map.msgLists.chatList[i].member_name != myName){
+			          	html1 += '<strong>'+map.msgLists.chatList[i].member_name+'</strong></div>';
+			          } else{
+			        	html1 += '<strong>'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+			          }
 			          html1 += '<div class="last-message text-muted">'+map.msgLists.chatList[i].msg_content+'</div>';
 			          html1 += '<small class="time text-muted">'+map.msgLists.chatList[i].time+'</small>';
-			          if(map.msgLists.chatList[i].opendate == null) {
+			          if(map.msgLists.chatList[i].sender_number == myNo && map.msgLists.chatList[i].opendate == null) {
 			        	  html1 += '<small class="chat-alert label label-danger">1</small>';
-			          } else {
+			          } else{
 			        	  html1 += '<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>';
 			          }
 			          html1 += '</a>';
 			          html1 += '</li>';
 				  }else{
 					  html1 += '<li>';
-	               	  html1 += '<a onclick="msgClick('+map.msgLists.chatList[i].sender_number+')" class="clearfix">';
+					  if(map.msgLists.chatList[i].member_name != myName){
+			          	html1 += '<a onclick="msgClick('+map.msgLists.chatList[i].member_number+')" class="clearfix">';
+			          } else{
+			        	html1 += '<a onclick="msgClick('+map.msgLists.chatList[i].sender_number+')" class="clearfix">';
+			          }
 			          html1 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">';
 			          html1 += '<div class="friend-name">';	
-			          html1 += '<strong>'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+			          if(map.msgLists.chatList[i].member_name != myName){
+			          	html1 += '<strong>'+map.msgLists.chatList[i].member_name+'</strong></div>';
+			          } else{
+			        	html1 += '<strong>'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+			          }
 			          html1 += '<div class="last-message text-muted">'+map.msgLists.chatList[i].msg_content+'</div>';
 			          html1 += '<small class="time text-muted">'+map.msgLists.chatList[i].time+'</small>';
-			          if(map.msgLists.chatList[i].opendate == null) {
+			          if(map.msgLists.chatList[i].sender_number == myNo && map.msgLists.chatList[i].opendate == null) {
 			        	  html1 += '<small class="chat-alert label label-danger">1</small>';
 			          } else {
 			        	  html1 += '<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>';
@@ -219,6 +249,7 @@ function msgClick(idx){
 			          html1 += '</li>';
 				  }
 			  }
+			  html2 += '<button class="ui basic button" style="margin:auto; font-size:0.8rem;font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';
@@ -248,14 +279,21 @@ function msgClick(idx){
 					  html2 += '</li>';
 				  }
 			  }
+			  html2+= '<input type="hidden" id="senName" value="'+notMe+'">';
+			  
 			  $('#chatDetail').empty();
 			  $('#chatDetail').html(html2);
 			  $('#chatList').html(html1);
+			  var unreadCount = map.unread.value;
 			  $('#unreadCount').empty();
-  			  $('#unreadCount').value(map.unread);
-  			  if($('#unreadCount').value(map.unread) == 0){
-  				  
+  			  if(unreadCount == 0){
+  				  $('#msgZone').empty();
+  				  html3='<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+  				  $('#msgZone').html(html3);
+  			  }else{
+  				 $('#unreadCount').html(unreadCount);
   			  }
+  			  window.location.href="#sendBtn";
 			  
 			  
 		}
@@ -270,6 +308,7 @@ function msgClick(idx){
             <div class="chat-message">
                 <ul class="chat">
                 <div id="chatDetail">
+                <button class="ui basic button" style="margin:auto; font-size:0.8rem; font-family: 'Spoqa Han Sans Neo';">John Doe / 팔로잉</button>
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
                     		<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
@@ -376,7 +415,6 @@ function msgClick(idx){
             		<input id="msgInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
             		<span class="input-group-btn">
             			<input type="hidden" name="senNo" id="senNo">
-            			<input type="text" value="${login.member_number}/${login.member_name}">
             			<button id="sendBtn" class="btn btn-success no-rounded" type="button">Send</button>
             		</span>
             	</div><!-- /input-group -->
@@ -574,7 +612,6 @@ function msgClick(idx){
 	  var msg = $('#msgInput').val();
 	  var sender = $('#senNo').val();
 	  var notMe;
-	  alert(${login.member_number}+"가"+sender+"에게 보낼예정");
 	  $.ajax({
 		  url: "sendChat.do",
 		    type: 'GET',
@@ -597,6 +634,7 @@ function msgClick(idx){
 				  socket.send(socketMsg);
 			  }
 			  var html2 = '';
+			  html2 += '<button class="ui basic button" style="margin:auto; font-size:0.8rem; font-family: "Spoqa Han Sans Neo" !important;">'+notMe+' / 팔로잉 </button>';
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';
@@ -626,6 +664,7 @@ function msgClick(idx){
 					  html2 += '</li>';
 				  }
 			  }
+			  html2+= '<input type="hidden" id="senName" value="'+notMe+'">';
 			  $('#chatDetail').empty();
 			  $('#chatDetail').html(html2);
 		  }
@@ -664,7 +703,6 @@ function msgClick(idx){
   <script>
   // 웹소켓 연결
   var sender = $('#senNo').val();
-  var notMe;
   var socket = null;
   $(document).ready(function(){
 	  connectWS();
@@ -685,77 +723,93 @@ function msgClick(idx){
                 showMethod: 'slideDown',
                 timeOut: 4000
          };
-         toastr.success('메시지 알림', event.data+'\n');
-         refresh();
+         toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
+         refresh(event);
   	 };
   	};
   	ws.onclose = function(event) { 
   		console.log('info : connection closed.');
   		setTimeout(function(){ 
-  			connect();
+  			connectWS();
   		}, 1000);
   	};
   	ws.onerror = function(event) { console.log('error : '+event); };
   };
-  function refresh(){
-	  $.ajax({
-  		  url: "refreshChat.do",
-  		    type: 'GET',
-  		    async: false,
-  		    data: {
-  			    sender_number: sender
-  			},
-  		  success : function(map) {
-  			  var myName = '${login.member_name}';
-  			  if(map.detailLists.chatList[0].member_name != myName){
-  				  notMe = map.detailLists.chatList[0].member_name;
-  			  }else{
-  				  notMe = map.detailLists.chatList[0].sender_name;
-  			  }
-  			  if(socket) {
-  				  var socketMsg = "msg,"+myName+","+notMe;
-  				  console.log("ssssssmsg>>"+socketMsg);
-  				  socket.send(socketMsg);
-  			  }
-  			  if($('#senNo').val() == sender){
-	  			  var html2 = '';
-	  			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
-	  				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
-	  					  html2 += '<li class="left clearfix">';
-	  					  html2 += '<span class="chat-img pull-left">';
-	  					  html2 += '<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">';
-	  					  html2 += '</span>';
-	  					  html2 += '<div class="chat-body clearfix">';
-	  					  html2 += '<div class="header">';
-	  					  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
-	  					  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
-	  					  html2 += '</div>';
-	  					  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
-	  					  html2 += '</div>';
-	  					  html2 += '</li>';
-	  				  }else if(map.detailLists.chatList[i].sender_number == map.senderNumber) { // 사용자가 수신자일때
-	  					  html2 += '<li class="right clearfix">';
-	  					  html2 += '<span class="chat-img pull-right">';
-	  					  html2 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">';
-	  					  html2 += '</span>';
-	  					  html2 += '<div class="chat-body clearfix">';
-	  					  html2 += '<div class="header">';
-	  					  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
-	  					  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
-	  					  html2 += '</div>';
-	  					  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
-	  					  html2 += '</div>';
-	  					  html2 += '</li>';
-	  				  }
-	  			  }
-	  			  $('#chatDetail').empty();
-	  			  $('#chatDetail').html(html2);
-	  	      }
-  			  $('#unreadCount').empty();
-  			  $('#unreadCount').value(map.unread);
-  		  }
-  	  });
+  function refresh(event){
+	  var senderNo = $('#senNo').val();
+	  var senderName = event.data;
+	  var senName = $('#senName').val();
+	  if(senderName == senName){
+		  $.ajax({
+	  		  url: "refreshChat.do",
+	  		    type: 'GET',
+	  		    async: false,
+	  		    data: {
+	  			    sender_number: senderNo
+	  			},
+	  		  success : function(map) {
+ 				if(map.length == 0){
+ 					alert("잘못된 상대입니다! 다른 상대를 선택해주세요.");
+ 					window.location.href = "#";
+ 				} else if (map.detailLists != 0) {
+ 					  var html2='';
+ 					  var myName = '${login.member_name}';
+ 					  var myNo = '${login.member_number}';
+ 					  if(map.detailLists.chatList[0].member_name != myName){
+ 						  notMe = map.detailLists.chatList[0].member_name;
+ 					  }else{
+ 						  notMe = map.detailLists.chatList[0].sender_name;
+ 					  }
+ 					  $('#senName').text(notMe);
+ 					  html2 += '<button class="ui basic button" style="margin:auto; font-size:0.8rem;font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
+ 					  for(var i = 0; i < map.detailLists.chatList.length; i++) {
+ 						  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
+ 							  html2 += '<li class="left clearfix">';
+ 							  html2 += '<span class="chat-img pull-left">';
+ 							  html2 += '<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">';
+ 							  html2 += '</span>';
+ 							  html2 += '<div class="chat-body clearfix">';
+ 							  html2 += '<div class="header">';
+ 							  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+ 							  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+ 							  html2 += '</div>';
+ 							  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+ 							  html2 += '</div>';
+ 							  html2 += '</li>';
+ 						  }else if(map.detailLists.chatList[i].sender_number == map.senderNumber) { // 사용자가 수신자일때
+ 							  html2 += '<li class="right clearfix">';
+ 							  html2 += '<span class="chat-img pull-right">';
+ 							  html2 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">';
+ 							  html2 += '</span>';
+ 							  html2 += '<div class="chat-body clearfix">';
+ 							  html2 += '<div class="header">';
+ 							  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+ 							  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+ 							  html2 += '</div>';
+ 							  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+ 							  html2 += '</div>';
+ 							  html2 += '</li>';
+ 						  }
+ 					  }
+ 					  html2+= '<input type="hidden" id="senName" value="'+notMe+'">';
+ 					  $('#chatDetail').empty();
+ 					  $('#chatDetail').html(html2);
+ 					  var unreadCount = map.unread.value;
+ 					  $('#unreadCount').empty();
+ 		  			  if(unreadCount == 0){
+ 		  				  $('#msgZone').empty();
+ 		  				  html3='<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+ 		  				  $('#msgZone').html(html3);
+ 		  			  }else{
+ 		  				 $('#unreadCount').html(unreadCount);
+ 		  			  }
+ 		  			  alert($('#senName').val());
+ 		  			  window.location.href="#sendBtn"; 
+	  			}
+	  		  }
+	  	  });
   	 }
+  }
   </script>
 
       <script src="../assets/js/bootstrap.min.js"></script>
