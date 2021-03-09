@@ -24,6 +24,7 @@ public class WalkServiceImpl implements WalkService {
 	
 	@Override
 	public void insertWalk(Walk dto) {
+		// 날짜 포맷 변경 (timestamp)
 		String from = (dto.getTime())+":00.000";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-ddhh:mm:ss.SSS");
 		Date parsedDate = null;
@@ -31,7 +32,6 @@ public class WalkServiceImpl implements WalkService {
 		try {
 		    parsedDate = dateFormat.parse(from);
 		    timestamp = new java.sql.Timestamp(parsedDate.getTime());
-		    dto.setMember_number(1L); 
 			dto.setWalk_date(timestamp);
 		} catch(Exception e) {
 			log.info("#insertWalk Exception : "+e);

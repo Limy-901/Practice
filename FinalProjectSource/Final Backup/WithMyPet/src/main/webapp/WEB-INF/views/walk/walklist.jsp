@@ -134,9 +134,17 @@
 </section><br><br>
 
 <!-- 산책개설버튼 -->
-<div style="margin:auto; display:flex; ">
-	 <a class="button" href="../walk/post.do"style="font-size:30px;margin:auto; padding:1.5%;display:flex; position:relative;"><b>&nbsp;&nbsp;&nbsp;&nbsp;직접 만들기 🐕&nbsp;&nbsp;&nbsp;&nbsp;</b></a>
-</div><br><br><br>
+<c:choose>
+	<c:when test="${! empty login}">
+		<div style="margin:auto; display:flex; ">
+		 <a class="button" href="../walk/post.do"style="font-size:30px;margin:auto; padding:1.5%;display:flex; position:relative;"><b>&nbsp;&nbsp;&nbsp;&nbsp;직접 만들기 🐕&nbsp;&nbsp;&nbsp;&nbsp;</b></a>
+		</div><br><br><br>
+	</c:when>
+	<c:otherwise>
+		<p>로그인 해야 이용 가능한 서비스입니다!</p>
+	</c:otherwise>
+</c:choose>
+
 
 <!-- 검색창 -->
 <center>

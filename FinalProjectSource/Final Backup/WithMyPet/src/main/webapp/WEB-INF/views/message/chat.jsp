@@ -211,14 +211,14 @@ function msgClick(idx){
 			          html1 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">';
 			          html1 += '<div class="friend-name">';	
 			          if(map.msgLists.chatList[i].member_name != myName){
-			          	html1 += '<strong>'+map.msgLists.chatList[i].member_name+'</strong></div>';
+			          	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].member_name+'</strong></div>';
 			          } else{
-			        	html1 += '<strong>'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+			        	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].sender_name+'</strong></div>';
 			          }
-			          html1 += '<div class="last-message text-muted">'+map.msgLists.chatList[i].msg_content+'</div>';
-			          html1 += '<small class="time text-muted">'+map.msgLists.chatList[i].time+'</small>';
+			          html1 += '<div class="last-message text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].msg_content+'</div>';
+			          html1 += '<small class="time text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].time+'</small>';
 			          if(map.msgLists.chatList[i].sender_number == myNo && map.msgLists.chatList[i].opendate == null) {
-			        	  html1 += '<small class="chat-alert label label-danger">1</small>';
+			        	  html1 += '<small class="chat-alert label label-danger" style="font-family: "Spoqa Han Sans Neo";">1</small>';
 			          } else{
 			        	  html1 += '<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>';
 			          }
@@ -234,12 +234,12 @@ function msgClick(idx){
 			          html1 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">';
 			          html1 += '<div class="friend-name">';	
 			          if(map.msgLists.chatList[i].member_name != myName){
-			          	html1 += '<strong>'+map.msgLists.chatList[i].member_name+'</strong></div>';
+			          	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].member_name+'</strong></div>';
 			          } else{
-			        	html1 += '<strong>'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+			        	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].sender_name+'</strong></div>';
 			          }
-			          html1 += '<div class="last-message text-muted">'+map.msgLists.chatList[i].msg_content+'</div>';
-			          html1 += '<small class="time text-muted">'+map.msgLists.chatList[i].time+'</small>';
+			          html1 += '<div class="last-message text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].msg_content+'</div>';
+			          html1 += '<small class="time text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].time+'</small>';
 			          if(map.msgLists.chatList[i].sender_number == myNo && map.msgLists.chatList[i].opendate == null) {
 			        	  html1 += '<small class="chat-alert label label-danger">1</small>';
 			          } else {
@@ -249,7 +249,7 @@ function msgClick(idx){
 			          html1 += '</li>';
 				  }
 			  }
-			  html2 += '<button class="ui basic button" style="margin:auto; font-size:0.8rem;font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
+			  html2 += '<button class="ui basic button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';
@@ -306,9 +306,19 @@ function msgClick(idx){
         <!-- selected chat -->
     	<div class="col-md-8 bg-white ">
             <div class="chat-message">
-                <ul class="chat">
-                <div id="chatDetail">
-                <button class="ui basic button" style="margin:auto; font-size:0.8rem; font-family: 'Spoqa Han Sans Neo';">John Doe / 팔로잉</button>
+                <ul class="chat" style="font-family: "Spoqa Han Sans Neo";">
+                <div id="chatDetail" style="font-family: "Spoqa Han Sans Neo";">
+                
+                <!-- 후기 & 팔로우 -->
+                <div class="input-group" style="margin-bottom:5%;">
+            		<input id="msgInput" style="font-family: 'Spoqa Han Sans Neo';" class="form-control border no-shadow no-rounded" placeholder="상대에게 보낼 메시지를 입력해주세요.">
+            		<span class="input-group-btn">
+            		<!-- 최근 3일이내 산책이 있을 경우 (join된 테이블이 있을때) -->
+            			<button id="sendBtn" style="font-family: 'Spoqa Han Sans Neo';" class="ui blue button" type="button">산책 후기 작성</button>
+            			<button class="ui blue basic button" style="margin:auto; background:rgba(0,0,0,.05); font-size:1.0rem; font-family: 'Spoqa Han Sans Neo';">Follow</button>
+            		</span>
+            	</div>
+            	
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
                     		<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
@@ -412,10 +422,10 @@ function msgClick(idx){
             </div>
             <div class="chat-box bg-white">
             	<div class="input-group" style="margin-bottom:5%;">
-            		<input id="msgInput" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+            		<input id="msgInput" style="font-family: 'Spoqa Han Sans Neo';" class="form-control border no-shadow no-rounded" placeholder="상대에게 보낼 메시지를 입력해주세요.">
             		<span class="input-group-btn">
             			<input type="hidden" name="senNo" id="senNo">
-            			<button id="sendBtn" class="btn btn-success no-rounded" type="button">Send</button>
+            			<button id="sendBtn" style="font-family: 'Spoqa Han Sans Neo';" class="ui blue button" type="button">전송</button>
             		</span>
             	</div><!-- /input-group -->
             </div>            
@@ -634,7 +644,7 @@ function msgClick(idx){
 				  socket.send(socketMsg);
 			  }
 			  var html2 = '';
-			  html2 += '<button class="ui basic button" style="margin:auto; font-size:0.8rem; font-family: "Spoqa Han Sans Neo" !important;">'+notMe+' / 팔로잉 </button>';
+			  html2 += '<button class="ui basic button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo" !important;">'+notMe+' / 팔로잉 </button>';
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';
@@ -643,10 +653,10 @@ function msgClick(idx){
 					  html2 += '</span>';
 					  html2 += '<div class="chat-body clearfix">';
 					  html2 += '<div class="header">';
-					  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
-					  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+					  html2 += '<strong style="font-family: "Spoqa Han Sans Neo";" class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+					  html2 += '<small style="font-family: "Spoqa Han Sans Neo";" class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
 					  html2 += '</div>';
-					  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+					  html2 += '<p style="font-family: "Spoqa Han Sans Neo";">'+map.detailLists.chatList[i].msg_content+'</p>';
 					  html2 += '</div>';
 					  html2 += '</li>';
 				  }else if(map.detailLists.chatList[i].sender_number == map.senderNumber) { // 사용자가 수신자일때
@@ -656,10 +666,10 @@ function msgClick(idx){
 					  html2 += '</span>';
 					  html2 += '<div class="chat-body clearfix">';
 					  html2 += '<div class="header">';
-					  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
-					  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+					  html2 += '<strong style="font-family: "Spoqa Han Sans Neo";" class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+					  html2 += '<small style="font-family: "Spoqa Han Sans Neo";" class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
 					  html2 += '</div>';
-					  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+					  html2 += '<p style="font-family: "Spoqa Han Sans Neo";">'+map.detailLists.chatList[i].msg_content+'</p>';
 					  html2 += '</div>';
 					  html2 += '</li>';
 				  }
@@ -761,7 +771,8 @@ function msgClick(idx){
  						  notMe = map.detailLists.chatList[0].sender_name;
  					  }
  					  $('#senName').text(notMe);
- 					  html2 += '<button class="ui basic button" style="margin:auto; font-size:0.8rem;font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
+ 					  html2 += '<button class="ui basic button" style="margin:auto; background: rgba(0, 0, 0, 0.8); font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
+ 					  html2 += '<button class="ui basic button" style="margin:auto; background: #FFB446; font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
  					  for(var i = 0; i < map.detailLists.chatList.length; i++) {
  						  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
  							  html2 += '<li class="left clearfix">';
@@ -770,10 +781,10 @@ function msgClick(idx){
  							  html2 += '</span>';
  							  html2 += '<div class="chat-body clearfix">';
  							  html2 += '<div class="header">';
- 							  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
- 							  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+ 							  html2 += '<strong style="font-family: "Spoqa Han Sans Neo";" class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+ 							  html2 += '<small style="font-family: "Spoqa Han Sans Neo";" class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
  							  html2 += '</div>';
- 							  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+ 							  html2 += '<p style="font-family: "Spoqa Han Sans Neo";">'+map.detailLists.chatList[i].msg_content+'</p>';
  							  html2 += '</div>';
  							  html2 += '</li>';
  						  }else if(map.detailLists.chatList[i].sender_number == map.senderNumber) { // 사용자가 수신자일때
@@ -783,10 +794,10 @@ function msgClick(idx){
  							  html2 += '</span>';
  							  html2 += '<div class="chat-body clearfix">';
  							  html2 += '<div class="header">';
- 							  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
- 							  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+ 							  html2 += '<strong style="font-family: "Spoqa Han Sans Neo";" class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+ 							  html2 += '<small  style="font-family: "Spoqa Han Sans Neo";" class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
  							  html2 += '</div>';
- 							  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+ 							  html2 += '<p style="font-family: "Spoqa Han Sans Neo";">'+map.detailLists.chatList[i].msg_content+'</p>';
  							  html2 += '</div>';
  							  html2 += '</li>';
  						  }

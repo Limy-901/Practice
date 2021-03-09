@@ -1,9 +1,12 @@
 @charset "UTF-8";
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+
 body {
   padding-top: 0;
   color: #777;
   background: #f9f9f9;
-  font-family: 'Open Sans',sans-serif;
+  font-family: 'Spoqa Han Sans Neo' !important;
   margin-top:20px;
 }
 
@@ -12,14 +15,17 @@ body {
 }
 
 .friend-list {
+	  font-family: 'Spoqa Han Sans Neo';
   list-style: none;
 }
 
 .friend-list li {
+	  font-family: 'Spoqa Han Sans Neo';
   border-bottom: 1px solid #eee;
 }
 
 .friend-list li a img {
+	  font-family: 'Spoqa Han Sans Neo';
   float: left;
   width: 45px;
   height: 45px;
@@ -27,6 +33,7 @@ body {
 }
 
  .friend-list li a {
+   font-family: 'Spoqa Han Sans Neo';
   position: relative;
   display: block;
   padding: 10px;
@@ -38,15 +45,18 @@ body {
 }
 
 .friend-list li.active a {
+	  font-family: 'Spoqa Han Sans Neo';
   background-color: #f1f5fc;
 }
 
 .friend-list li a .friend-name, 
 .friend-list li a .friend-name:hover {
+	  font-family: 'Spoqa Han Sans Neo';
   color: #777;
 }
 
 .friend-list li a .last-message {
+  font-family: 'Spoqa Han Sans Neo';
   width: 65%;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -54,16 +64,19 @@ body {
 }
 
 .friend-list li a .time {
+	  font-family: 'Spoqa Han Sans Neo';
   position: absolute;
   top: 10px;
   right: 8px;
 }
 
 small, .small {
+	  font-family: 'Spoqa Han Sans Neo';
   font-size: 85%;
 }
 
 .friend-list li a .chat-alert {
+	  font-family: 'Spoqa Han Sans Neo';
   position: absolute;
   right: 8px;
   top: 27px;
@@ -72,15 +85,18 @@ small, .small {
 }
 
 .chat-message {
+	  font-family: 'Spoqa Han Sans Neo';
   padding: 60px 20px 115px;
 }
 
 .chat {
+	  font-family: 'Spoqa Han Sans Neo';
     list-style: none;
     margin: 0;
 }
 
 .chat-message{
+	  font-family: 'Spoqa Han Sans Neo';
     background: #f9f9f9;  
 }
 
@@ -97,15 +113,18 @@ img {
 }
 
 .chat-body {
+	  font-family: 'Spoqa Han Sans Neo';
   padding-bottom: 20px;
 }
 
 .chat li.left .chat-body {
+	  font-family: 'Spoqa Han Sans Neo';
   margin-left: 70px;
   background-color: #fff;
 }
 
 .chat li .chat-body {
+	  font-family: 'Spoqa Han Sans Neo';
   position: relative;
   font-size: 11px;
   padding: 10px;
@@ -116,15 +135,19 @@ img {
 }
 
 .chat li .chat-body .header {
+	  font-family: 'Spoqa Han Sans Neo';
   padding-bottom: 5px;
   border-bottom: 1px solid #f1f5fc;
 }
 
 .chat li .chat-body p {
+	font-size:1.0rem;
+	  font-family: 'Spoqa Han Sans Neo';
   margin: 0;
 }
 
 .chat li.left .chat-body:before {
+	  font-family: 'Spoqa Han Sans Neo';
   position: absolute;
   top: 10px;
   left: -8px;
@@ -143,6 +166,7 @@ img {
 }
 
 .chat li.right .chat-body:before {
+	  font-family: 'Spoqa Han Sans Neo';
   position: absolute;
   top: 10px;
   right: -8px;
@@ -161,10 +185,12 @@ img {
 }
 
 .chat li {
+	  font-family: 'Spoqa Han Sans Neo';
   margin: 15px 0;
 }
 
 .chat li.right .chat-body {
+	  font-family: 'Spoqa Han Sans Neo';
   margin-right: 70px;
   background-color: #fff;
 }
@@ -176,6 +202,7 @@ img {
   left: 444px;
   right: 0;
 */
+  font-family: 'Spoqa Han Sans Neo';
   padding: 15px;
   border-top: 1px solid #eee;
   transition: all .5s ease;
@@ -186,10 +213,13 @@ img {
 }
 
 .primary-font {
+		font-size:1.0rem;
+	  font-family: 'Spoqa Han Sans Neo';
   color: #3c8dbc;
 }
 
 a:hover, a:active, a:focus {
+	  font-family: 'Spoqa Han Sans Neo';
   text-decoration: none;
   outline: 0;
 }

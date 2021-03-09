@@ -249,6 +249,7 @@
 		  <div class="field">
 		    <label style="font-family: 'Spoqa Han Sans Neo';">내용</label>
 		    <textarea name="walk_content"></textarea>
+		    <input type="hidden" name="member_number" value="${login.member_number}">
 		  </div><br/><br/>
 		  <center><button id="btn_submit" type="submit" class="button-set" style="font-family: 'Spoqa Han Sans Neo';">모임 개설하기</button>
 		  </center>
