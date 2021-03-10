@@ -105,5 +105,27 @@
     <select id="checkCmt" parameterType="joinVo" resultType="int">
     	select count(*) from WALK_CMT where WALK_IDX=#{walk_idx} and MEMBER_NUMBER=#{member_number}
     </select>
+    
+    <select id="getCmtPetData" parameterType="long" resultType="pet.member.vo.MypagePetVO">
+    	SELECT pet_name, pet_sex,
+		  <![CDATA[CASE WHEN TRUNC(SYSDATE) - pet_age <= 30 THEN
+	                 TRUNC(SYSDATE) - pet_age + 1 || '일'
+	            WHEN MONTHS_BETWEEN(TRUNC(SYSDATE), pet_age) < 12 THEN
+	                 TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), pet_age)) || '개월'
+	            ELSE
+	                 TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), pet_age) / 12 ) || '살'
+	       END pet_age,
+	      pet_walkarea,
+	      pet_walkpoint,
+	      pet_fname,
+	      pet_ofname,
+	      pet_fsize
+	      FROM PET_MYPAGE
+	      WHERE member_number= #{member_number}]]>
+    </select>
+    
+    <select id="getMemData" parameterType="long" resultType="pet.member.vo.MemberVO">
+    	select * from MEMBER where MEMBER_NUMBER = #{member_number}
+    </select>
 
 </mapper>

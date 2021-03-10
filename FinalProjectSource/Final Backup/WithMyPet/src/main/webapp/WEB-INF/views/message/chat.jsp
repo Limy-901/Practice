@@ -306,8 +306,8 @@ function msgClick(idx){
         <!-- selected chat -->
     	<div class="col-md-8 bg-white ">
             <div class="chat-message">
-                <ul class="chat" style="font-family: "Spoqa Han Sans Neo";">
-                <div id="chatDetail" style="font-family: "Spoqa Han Sans Neo";">
+                <ul class="chat" style="font-family: 'Spoqa Han Sans Neo';">
+                <div id="chatDetail" style="font-family: 'Spoqa Han Sans Neo';">
                 
                 <!-- 후기 & 팔로우 -->
                 <div class="input-group" style="margin-bottom:5%;">

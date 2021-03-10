@@ -2,6 +2,9 @@ package pet.mvc.mapper;
 
 import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
+
+import pet.member.vo.MemberVO;
+import pet.member.vo.MypagePetVO;
 import pet.walk.vo.Comment;
 import pet.walk.vo.Walk;
 import pet.walk.vo.WalkListVo;
@@ -26,4 +29,6 @@ public interface WalkMapper {
 	int getWalkLike(long idx);
 	int checkJoin(joinVo vo);
 	int checkCmt(joinVo vo);
+	MypagePetVO getCmtPetData(long member_number);
+	MemberVO getMemData(long member_number);
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import pet.message.vo.MemberReview;
 import pet.message.vo.Msg;
 
 public interface MessageMapper {
@@ -12,4 +13,5 @@ public interface MessageMapper {
 	void insertMsg(Msg msg);
 	long getUnreadMsg(long member_number);
 	void msgRead(@Param("member_number") long member_number, @Param("sender_number") long sender_number);
+	MemberReview selectRecentWalk(@Param("member_number") long member_number, @Param("walk_number") long walk_number);
 }

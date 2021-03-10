@@ -61,43 +61,45 @@
                       <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                   </li>
                   
-                  <li class="nav-item dropdown" style="font-family: 'Spoqa Han Sans Neo';">
+                  <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Spoqa Han Sans Neo';">
                          	산 책 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';" >
-                      	<a class="dropdown-item" href="walk/list.do" >산책모집 </a>
-                          <a class="dropdown-item" href="walk/board.do">산책후기 </a>
+                      	<a class="dropdown-item" href="walklist.do" style="font-family: 'Spoqa Han Sans Neo';">산책모집 </a>
+                          <a class="dropdown-item" href="walkboard.do" style="font-family: 'Spoqa Han Sans Neo';">산책후기 </a>
                       </div>
                   </li>
-                  <li class="nav-item dropdown" style="font-family: 'Spoqa Han Sans Neo';">
+                  <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Spoqa Han Sans Neo';">
                          	쇼 핑 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
-                      	<a class="dropdown-item" href="blog.html">쇼핑하기</a>
-                          <a class="dropdown-item" href="blog.html">구매후기</a>
+                      	<a class="dropdown-item" href="/product?catgo_code=9" style="font-family: 'Spoqa Han Sans Neo';">쇼핑하기</a>
+                        <a class="dropdown-item" href="/cart">장바구니</a>
+                        <a class="dropdown-item" href="/order">결제</a>
                       </div>
                   </li>
-                  <li class="nav-item dropdown" style="font-family: 'Spoqa Han Sans Neo';">
+                  <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Spoqa Han Sans Neo';">
                          	 커뮤니티 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
-                          <a class="dropdown-item" href="blog.html">공지사항</a>
-                          <a class="dropdown-item" href="blog-single.html">일상이야기</a>
+                          <a class="dropdown-item" href="/board/list.do" style="font-family: 'Spoqa Han Sans Neo';">공지사항</a>
+                          <a class="dropdown-item" href="/board/list.do" style="font-family: 'Spoqa Han Sans Neo';">일상이야기</a>
                       </div>
                   </li>
-                  <li class="nav-item" style="font-family: 'Spoqa Han Sans Neo';">
-                      <a class="nav-link" href="gallery.html" style="font-family: 'Spoqa Han Sans Neo';">로그인 </a>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/member/login.do" style="font-family: 'Spoqa Han Sans Neo';">로그인 </a>
                   </li>
                  
                   <li class="nav-item">
-                      <a class="nav-link" href="contact.html">Contact </a>
+                      <a class="nav-link" href="contact.html" style="font-family: 'Spoqa Han Sans Neo';">Contact </a>
                   </li>
+                  
               </ul>
           </div>
           <!-- toggle switch for light and dark theme -->
@@ -133,15 +135,24 @@
   </div>
 </section><br><br>
 
-<!-- 산책개설버튼 -->
+<!-- 산책개설버튼, 로그인 시에만 개설 가능 -->
 <c:choose>
 	<c:when test="${! empty login}">
-		<div style="margin:auto; display:flex; ">
-		 <a class="button" href="../walk/post.do"style="font-size:30px;margin:auto; padding:1.5%;display:flex; position:relative;"><b>&nbsp;&nbsp;&nbsp;&nbsp;직접 만들기 🐕&nbsp;&nbsp;&nbsp;&nbsp;</b></a>
-		</div><br><br><br>
+		<c:choose>
+			<c:when test="${!empty mpvo}">
+				<div style="margin:auto; display:flex; ">
+				 <a class="button" href="../walk/post.do"style="font-size:30px;margin:auto; padding:1.5%;display:flex; position:relative;"><b>&nbsp;&nbsp;&nbsp;&nbsp;직접 만들기 🐕&nbsp;&nbsp;&nbsp;&nbsp;</b></a>
+				</div><br><br><br>
+			</c:when>
+			<c:otherwise>
+				<div style="margin:auto; display:flex; ">
+				 <a href="#"style="font-size:30px;margin:auto; padding:1.5%;display:flex; position:relative;"><b>&nbsp;&nbsp;&nbsp;&nbsp;아직 반려동물 정보가 없어요!🐕&nbsp;&nbsp;&nbsp;&nbsp;</b></a>
+				</div><br><br><br>
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<p>로그인 해야 이용 가능한 서비스입니다!</p>
+		<br><br><br><center><p>회원만 이용 가능한 서비스입니다!</p></center><br><br><br>
 	</c:otherwise>
 </c:choose>
 
@@ -161,6 +172,7 @@
 </center><br><br><br>
 
 <script>
+// 산책글 검색 Ajax
 function search(){
 	var keyword = $("#searchKeyword").val();
 	var selected = $("#searchType").val();
@@ -191,7 +203,6 @@ function search(){
    				   html += "<p>"+responseData.list[i].walk_content+"</p>";
 				   html += "<a href='../walk/blog.do?idx="+responseData.list[i].walk_idx+"' class='read'>자세히 보기>></a>";
 				   html += "</div></div></center></div>";
-			        
 			   }
 			   $('#searchReset').html(html);
 		   }
@@ -199,7 +210,7 @@ function search(){
 }
 </script>
 <c:if test="${empty list}">
-	<p>데이터가 없습니다.</p>
+	<center><br><br><br><p>데이터가 없습니다.</p><br><br><br></center>
 </c:if>
 	
 <div id="searchReset" style="align:center;">
@@ -209,7 +220,7 @@ function search(){
 	    <div class="acard-media-object-container">
 	      <div class="acard-media-object" style="background-image: url(../assets/images/g1.jpg);"></div>
 	      <c:if test="${empty list.cmtList[status.index]}"> 
-	      	<span class="acard-media-object-tag subtle">기다리고 있어요!</span>
+	      	<span class="acard-media-object-tag subtle">참가자를 기다리고 있어요!</span>
 	      </c:if>
 	      <ul class="acard-media-object-social-list">
 	        <li><!-- 댓글 회원 사진 -->
@@ -224,12 +235,17 @@ function search(){
 	    <div class="acard-media-body" id="acard${item.walk_idx}">
 	      <div class="acard-media-body-top">
 	        <span class="asubtle">${item.day}, ${item.time} &nbsp;&nbsp;/&nbsp;&nbsp; ${item.walk_writer}</span>
-	        <div class="acard-media-body-top-icons au-float-right">
-	          <a href="javascript:sendLink()"><img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" /></a>
-	          &nbsp;&nbsp;&nbsp;
-	          <button onclick="location.href='blog.do?idx=${item.walk_idx}'" class="massive yellow ui button" 
-		      style="position:relative;margin-top:38%;font-size:0.95rem;font-family: 'Spoqa Han Sans Neo';">더 알아보기</button>
-	        </div>
+	        
+	        <!-- 로그인 시에만 더보기 가능 -->
+	        <c:if test="${!empty login}">
+		        <div class="acard-media-body-top-icons au-float-right">
+		          <a href="javascript:sendLink()"><img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" /></a>
+		          &nbsp;&nbsp;&nbsp;
+		          <button onclick="location.href='blog.do?idx=${item.walk_idx}'" class="massive yellow ui button" 
+			      style="position:relative;margin-top:38%;font-size:0.95rem;font-family: 'Spoqa Han Sans Neo';">더 알아보기</button>
+		        </div>
+	        </c:if>
+	        
 	      </div>
 	      <span class="acard-media-body-heading" style="font-size:1.3rem; color:#FFB446;" >${item.walk_subject}</span>
 	      <p style="margin-top:3%;">${item.walk_content}</p>
@@ -253,13 +269,13 @@ function search(){
     Kakao.Link.sendDefault({
       objectType: 'feed',
       content: {
-	        title: '함께 산책해요 :: With My Pet',
-	        description: '우리 강아지의 산책 친구',
-	        imageUrl: 'https://postfiles.pstatic.net/MjAyMTAzMDJfMTY1/MDAxNjE0NjgxMzk0MjY2.iMWrCceWl_Bat-8WehW_MPBWhiGWa_Zt3wpLYBrYrPgg.XAMxlGBwAYIdppCdX2H5CxObPeC-aYmLTvcYNXDLGAog.JPEG.misty901/Corg.jpg?type=w773',
-	        link: {
-	    	  mobileWebUrl: 'http://localhost:8080/walk/blog.do?idx='+${item.walk_idx},
-	          webUrl: 'http://localhost:8080/walk/blog.do?idx='+${item.walk_idx}
-	        }
+        title: '함께 산책해요 :: With My Pet',
+        description: '우리 강아지의 산책 친구',
+        imageUrl: 'https://postfiles.pstatic.net/MjAyMTAzMDJfMTY1/MDAxNjE0NjgxMzk0MjY2.iMWrCceWl_Bat-8WehW_MPBWhiGWa_Zt3wpLYBrYrPgg.XAMxlGBwAYIdppCdX2H5CxObPeC-aYmLTvcYNXDLGAog.JPEG.misty901/Corg.jpg?type=w773',
+        link: {
+    	  mobileWebUrl: 'http://localhost:8080/walk/blog.do?idx='+${item.walk_idx},
+          webUrl: 'http://localhost:8080/walk/blog.do?idx='+${item.walk_idx}
+        }
       },
     })
   }

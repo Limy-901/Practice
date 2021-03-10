@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import lombok.extern.log4j.Log4j;
 import pet.member.vo.MemberVO;
+import pet.member.vo.MypagePetVO;
 import pet.walk.service.WalkServiceImpl;
 import pet.walk.vo.CmtVo;
 import pet.walk.vo.Comment;
@@ -83,10 +84,12 @@ public class WalkController {
 
 	// 산책 참여신청
 	@GetMapping(value="apply.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public @ResponseBody CmtVo apply(String walk_cmt_writer, String walk_cmt_content, Long walk_idx) {
+	public @ResponseBody CmtVo apply(HttpSession session, String walk_cmt_content, Long walk_idx) {
+		MemberVO vo = (MemberVO) session.getAttribute("login");
 		Comment dto = new Comment();
+		dto.setMember_number(vo.getMember_number());
 		dto.setWalk_idx(walk_idx);
-		dto.setWalk_cmt_writer(walk_cmt_writer);
+		dto.setWalk_cmt_writer(vo.getMember_name());
 		dto.setWalk_cmt_content(walk_cmt_content);
 		boolean flag = walkService.insertWalkCmt(dto);
 		if(flag) {
@@ -132,24 +135,35 @@ public class WalkController {
 	
 	// 산책 신청자 정보 데이터
 	@GetMapping(value="getMemberData.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public @ResponseBody Comment getCmtMember(long idx, HttpServletResponse response) {
-		Comment dto = walkService.getWalkCmtData(idx);
-		return dto;
+	public @ResponseBody Hashtable<String, Object> getCmtMember(long idx, HttpServletResponse response) {
+		Hashtable<String, Object> map = new Hashtable<String, Object>();
+		Comment dto = walkService.getWalkCmtData(idx); // 댓글 정보 가져오기
+		MypagePetVO vo = walkService.getCmtPetData(dto.getMember_number()); // 댓글 작성자 반려동물 정보 가져오기
+		map.put("Comment",dto);
+		map.put("Pet",vo);
+		return map;
 	}
 	
 	// 산책 게시글 구체적으로 보기
 	@RequestMapping("blog.do")
 	public ModelAndView walkblog(HttpSession session, HttpServletRequest request, long idx) {
 		Walk dto = walkService.getWalk(idx);
+		log.info("여기욤"+dto);
+		// 날짜 + 시간 가공
 		Date origin = dto.getWalk_date();
 		DateFormat dayForm = new SimpleDateFormat("yyyy년 MM월 dd일");
 		DateFormat timeForm = new SimpleDateFormat("a hh시 mm분");
 		String day = dayForm.format(origin);
 		String time = timeForm.format(origin);
 		Hashtable<String,Object> map = new Hashtable<String,Object>();
+		// 멤버 + 반려동물 정보
+		MemberVO member = walkService.getMemData(dto.getMember_number());
+		MypagePetVO pet = walkService.getCmtPetData(dto.getMember_number());
 		map.put("day",day);
 		map.put("time",time);
 		map.put("dto",dto);
+		map.put("member",member);
+		map.put("pet",pet);
 		ModelAndView mv = new ModelAndView("walk/walkblog","content",map);
 		return mv;
 	}

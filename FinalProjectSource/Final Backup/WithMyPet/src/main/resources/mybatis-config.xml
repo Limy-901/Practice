@@ -33,6 +33,7 @@
 		<typeAlias alias="memberWalkChart" type="pet.admin.vo.MemberWalkChart"/>
 		
 		<typeAlias alias="msg" type="pet.message.vo.Msg"/>
+		<typeAlias alias="memberReview" type="pet.message.vo.MemberReview"/>
    	   
    </typeAliases>
    

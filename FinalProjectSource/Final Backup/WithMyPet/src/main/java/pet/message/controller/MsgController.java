@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import pet.member.vo.MemberVO;
 import pet.message.service.MsgService;
+import pet.message.vo.MemberReview;
 import pet.message.vo.Msg;
 import pet.message.vo.MsgListResult;
 
@@ -41,20 +42,24 @@ public class MsgController {
 	//메시지 상대 선택, 해당 상대와의 메시지 읽음 처리, ajax
 	@GetMapping(value="selectChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Hashtable<String, Object> selectChat(HttpSession session, long sender_number) {
-		MemberVO vo = (MemberVO) session.getAttribute("login"); // 세션에서 로그인 정보 받기
+		MemberVO vo = (MemberVO) session.getAttribute("login");
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
-		MsgListResult msgLists = msgService.getAllMsgList(vo.getMember_number()); // 대화상대목록 업데이트
-		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 대화내용
-		// 메시지 읽음 처리.
-		long count = msgService.msgRead(vo.getMember_number(), sender_number);
-   	    session.setAttribute("unread", count); // 읽지 않은 메시지 개수 카운트
-   	    log.info("##unread 갱신했어요"+count);
-   	 
-		map.put("msgLists",msgLists);
+		
+		MsgListResult msgLists = msgService.getAllMsgList(vo.getMember_number()); // 대화 목록 갱신
+		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number); // 1:1 대화내역 불러오기
+		
+		long count = msgService.msgRead(vo.getMember_number(), sender_number); // 메시지 읽음 처리
+   	    session.setAttribute("unread", count);
+   	    
+   	    MemberReview walk = msgService.selectRecentWalk(vo.getMember_number(), sender_number); // 최근 1:1 산책 내역 검사
+   	    if(walk == null) log.info("검색된 1:1 산책 없음");
+   	    else map.put("walk",walk);
+		map.put("msgLists",msgLists); 
 		map.put("detailLists",detailLists);
-		map.put("senderNumber",sender_number);
+		map.put("senderNumber",sender_number); 
 		map.put("unread",count);
 		map.put("myName",vo.getMember_name());
+		
 		return map;
 	}
 	

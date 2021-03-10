@@ -132,7 +132,7 @@ body{
 .blog-footer {
   margin: 0 auto;
   padding-bottom: 0.125rem;
-  width: 80%;
+  width: 40%;
 }
 
 .blog-footer ul {
@@ -450,7 +450,6 @@ body {
 }
 
 body, html {
-  height: 200%;
 }
 
 * {

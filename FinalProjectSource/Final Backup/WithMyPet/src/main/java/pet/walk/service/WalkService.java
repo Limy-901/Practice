@@ -1,5 +1,7 @@
 package pet.walk.service;
 
+import pet.member.vo.MemberVO;
+import pet.member.vo.MypagePetVO;
 import pet.walk.vo.CmtVo;
 import pet.walk.vo.Comment;
 import pet.walk.vo.Walk;
@@ -19,4 +21,6 @@ public interface WalkService {
 	long selectByCmtIdx(long cmtIdx);
 	void addHeart(joinVo vo);
 	int getWalkLike(long idx);
+	MypagePetVO getCmtPetData(long member_number);
+	MemberVO getMemData(long member_number);
 }

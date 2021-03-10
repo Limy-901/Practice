@@ -8,6 +8,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.log4j.Log4j;
+import pet.member.vo.MemberVO;
+import pet.member.vo.MypagePetVO;
 import pet.mvc.mapper.WalkMapper;
 import pet.walk.vo.CmtVo;
 import pet.walk.vo.Comment;
@@ -22,6 +24,7 @@ public class WalkServiceImpl implements WalkService {
 	@Autowired
 	private WalkMapper walkMapper;
 	
+	// 신규 산책 개설
 	@Override
 	public void insertWalk(Walk dto) {
 		// 날짜 포맷 변경 (timestamp)
@@ -38,6 +41,8 @@ public class WalkServiceImpl implements WalkService {
 		}
 		walkMapper.insertWalk(dto);
 	}
+	
+	// 산책 게시글 수정
 	@Override
 	public void walkUpdate(Walk dto) {
 		// �ð� > TimeStamp ��ȯ
@@ -56,6 +61,7 @@ public class WalkServiceImpl implements WalkService {
 		walkMapper.walkUpdate(dto);
 	}
 
+	// 산책 리스트 
 	@Override
 	public WalkListResult getListS(int cp, int ps, String orderType, String keyword) {
 		ps = 5;
@@ -75,7 +81,7 @@ public class WalkServiceImpl implements WalkService {
 		return new WalkListResult(cp, ps, walkMapper.totalWalk(orderType, keyword), lists, cmtList);
 	}
 
-
+	// 산책 blog 컨텐츠 불러오기
 	@Override
 	public Walk getWalk(long idx) {
 		Walk dto = walkMapper.getWalk(idx);
@@ -93,6 +99,7 @@ public class WalkServiceImpl implements WalkService {
 		return dto;
 	}
 
+	// 참여 댓글 가져오기
 	@Override
 	public CmtVo getWalkCmt(long idx) {
 		ArrayList<Comment> normal = walkMapper.getWalkCmt(idx);
@@ -103,26 +110,38 @@ public class WalkServiceImpl implements WalkService {
 		return vo;
 	}
 
+	// 참여 댓글 insert
 	@Override
 	public boolean insertWalkCmt(Comment dto) {
-		dto.setMember_number(1L); 
 		joinVo vo = new joinVo(dto.getWalk_idx(),dto.getMember_number());
-		int i =walkMapper.checkCmt(vo);
-		if(i==1) return false;
+		int i = walkMapper.checkCmt(vo);
+		if(i == 1 ) return false;
 		else {
 			walkMapper.insertWalkCmt(dto);
 			return true;
 		}
 	}
+	
+	// 산책 게시글 삭제 
 	@Override
 	public void walkDelete(long idx) {
 		walkMapper.walkDelete(idx);
 	}
+	// 참여 댓글 자세히보기
 	@Override
 	public Comment getWalkCmtData(long idx) {
 		Comment dto = walkMapper.getWalkCmtData(idx);
 		return dto;
 	}
+	
+//  참여 댓글 수락하기 (1) 회원번호 가져오기
+	@Override
+	public long selectByCmtIdx(long cmtIdx) {
+		Long memNo = walkMapper.selectByCmtIdx(cmtIdx);
+		return memNo;
+	}
+	
+	// 참여 댓글 수락하기 (2) 수락하기
 	@Override
 	public boolean insertWalkJoin(joinVo vo, long walk_idx) {
 		int flag = walkMapper.checkJoin(vo);
@@ -134,19 +153,32 @@ public class WalkServiceImpl implements WalkService {
 			return true;
 		}
 	}
-	@Override
-	public long selectByCmtIdx(long cmtIdx) {
-		Long memNo = walkMapper.selectByCmtIdx(cmtIdx);
-		return memNo;
-	}
+	
+	// 좋아요 버튼
 	@Override
 	public void addHeart(joinVo vo) {
 		walkMapper.addHeart(vo);
 	}
+	
+	// 좋아요 개수 카운트
 	@Override
 	public int getWalkLike(long idx) {
 		int likeCount = walkMapper.getWalkLike(idx);
 		return likeCount;
 	}
+
+	@Override
+	public MypagePetVO getCmtPetData(long member_number) {
+		MypagePetVO vo = walkMapper.getCmtPetData(member_number);
+		return vo;
+	}
+
+	@Override
+	public MemberVO getMemData(long member_number) {
+		MemberVO vo = walkMapper.getMemData(member_number);
+		return vo;
+	}
+	
+	
 
 }

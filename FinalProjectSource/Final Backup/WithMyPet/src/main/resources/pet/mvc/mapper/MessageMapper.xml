@@ -44,5 +44,22 @@
 	<update id="msgRead" parameterType="map">
 		update MESSAGE set OPENDATE=SYSDATE where MEMBER_NUMBER=#{sender_number} and SENDER_NUMBER=#{member_number}
 	</update>
+	
+	<select id="selectRecentWalk" resultType="memberReview" parameterType="map">
+		<![CDATA[select a.WALK_IDX, a.MEMBER_NUMBER, b.WALK_NUMBER, a.WALK_DATE
+		from (
+		    select max(WALK_IDX) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as WALK_IDX,
+		        max(MEMBER_NUMBER) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as MEMBER_NUMBER,
+		        max(WALK_DATE) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as WALK_DATE
+		    from WALK
+		    where MEMBER_NUMBER = #{member_number} or MEMBER_NUMBER = #{walk_number}
+		) a 
+		inner join (
+		    select WALK_IDX, MEMBER_NUMBER as WALK_NUMBER
+		    from WALK_JOIN
+		    where MEMBER_NUMBER = #{member_number} or MEMBER_NUMBER = #{walk_number}
+		) b
+		on a.WALK_IDX = b.WALK_IDX]]>
+	</select>
 
 </mapper>

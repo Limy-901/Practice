@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import pet.message.vo.MemberReview;
 import pet.message.vo.Msg;
 import pet.message.vo.MsgListResult;
 import pet.mvc.mapper.MessageMapper;
@@ -101,6 +102,27 @@ public class MsgServiceImpl implements MsgService {
 		msgMapper.msgRead(member_number, sender_number);
 		long unread = getUnreadMsg(member_number);
 		return unread;
+	}
+	
+	// 최근 일주일 이내, 매칭된 산책이 있는지 검색
+	@Override
+	public MemberReview selectRecentWalk(long member_number, long walk_number) {
+		MemberReview review = msgMapper.selectRecentWalk(member_number, walk_number);
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String curDateStr = dateFormat.format(System.currentTimeMillis());
+		String walkDateStr = dateFormat.format(review.getWalk_date());
+		Date walkDate = null;
+		Date curDate = null;
+		try {
+			curDate = dateFormat.parse(curDateStr);
+			walkDate = dateFormat.parse(walkDateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		long seconds = (curDate.getTime() - walkDate.getTime());
+		long days = TimeUnit.MILLISECONDS.toDays(seconds);
+		if(days > 7) return null;
+		else return review;
 	}
 
 }
