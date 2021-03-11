@@ -17,7 +17,7 @@
 	   <typeAlias alias="Product" type="pet.mvc.shopdomain.Product"/>
 	   <typeAlias alias="ProductVo" type="pet.mvc.shopdomain.ProductVo"/>
    	   <typeAlias alias="ProductListResult" type="pet.mvc.shopdomain.ProductListResult"/>
-   	   
+   	  
 		   	   
    	   <typeAlias type="pet.mvc.board.Board" alias="Board"/>
 	   <typeAlias type="pet.mvc.board.BoardVo" alias="BoardVo"/>
@@ -39,6 +39,7 @@
    
    <mappers>
    		<mapper resource="pet/mvc/mapper/MessageMapper.xml"/>
+   		
    		<mapper resource="pet/mvc/mapper/AdminMapper.xml"/>
   		<mapper resource="pet/mvc/mapper/IndexMapper.xml"/>
   		<mapper resource="pet/mvc/mapper/WalkMapper.xml"/>

@@ -1,5 +1,6 @@
 package pet.message.service;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,22 +108,51 @@ public class MsgServiceImpl implements MsgService {
 	// 최근 일주일 이내, 매칭된 산책이 있는지 검색
 	@Override
 	public MemberReview selectRecentWalk(long member_number, long walk_number) {
+		// 회원 번호로 둘이 함께 한 산책 있는지 검사
 		MemberReview review = msgMapper.selectRecentWalk(member_number, walk_number);
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String curDateStr = dateFormat.format(System.currentTimeMillis());
-		String walkDateStr = dateFormat.format(review.getWalk_date());
-		Date walkDate = null;
-		Date curDate = null;
-		try {
-			curDate = dateFormat.parse(curDateStr);
-			walkDate = dateFormat.parse(walkDateStr);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		// 산책후기 작성했는지 검사
+		// 일주일 내 산책인지 검사
+		if(review != null) {
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String curDateStr = dateFormat.format(System.currentTimeMillis());
+			String walkDateStr = dateFormat.format(review.getWalk_date());
+			Date walkDate = null;
+			Date curDate = null;
+			try {
+				curDate = dateFormat.parse(curDateStr);
+				walkDate = dateFormat.parse(walkDateStr);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			long seconds = (curDate.getTime() - walkDate.getTime());
+			long days = TimeUnit.MILLISECONDS.toDays(seconds);
+			
+			if(days > 7) return null;
+			else {
+				DateFormat dayForm = new SimpleDateFormat("yyyy년 MM월 dd일");
+				String day = dayForm.format(walkDate);
+				review.setDay(day);
+				return review;
+			}
+		}else return null;
+	}
+	
+	// 산책 한줄평 작성, 트랜잭션
+	@Override
+	public void writeReview(MemberReview memberReview, long member_number) {
+		// 산책 후기 체크를 위해 주최자, 참가자 구분, 타입에 따라 다른 컬럼에 체크
+		String type = null;
+		// 참가자인 경우
+		if(memberReview.getMember_number() != member_number) {
+			type = "walker";
+			memberReview.setMember_number(member_number);
+			msgMapper.updateJoin(type,memberReview.getWalk_idx());
+		}else {
+		// 주최자인 경우
+			type = "leader";
+			msgMapper.updateJoin(type,memberReview.getWalk_idx());
 		}
-		long seconds = (curDate.getTime() - walkDate.getTime());
-		long days = TimeUnit.MILLISECONDS.toDays(seconds);
-		if(days > 7) return null;
-		else return review;
+		msgMapper.writeReview(memberReview);
 	}
 
 }

@@ -19,7 +19,6 @@
 		<property name="username" value="pet"></property>
 		<property name="password" value="java"></property>
 	</bean>
-	
 
 	
 	<!-- 트랜잭션 사용하기 위함. -->

@@ -15,5 +15,7 @@ public class MemberReview {
 	private long walk_number;
 	private Date walk_date;
 	private Date send_date;
-	private String review;
+	private String member_review;
+	private String day;
+	private String walk_location;
 }

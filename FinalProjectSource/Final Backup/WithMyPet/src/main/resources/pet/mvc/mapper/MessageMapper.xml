@@ -42,24 +42,43 @@
 	</select>
 	
 	<update id="msgRead" parameterType="map">
-		update MESSAGE set OPENDATE=SYSDATE where MEMBER_NUMBER=#{sender_number} and SENDER_NUMBER=#{member_number}
+		update MESSAGE set OPENDATE=SYSDATE where MEMBER_NUMBER = #{sender_number} and SENDER_NUMBER = #{member_number}
 	</update>
 	
 	<select id="selectRecentWalk" resultType="memberReview" parameterType="map">
-		<![CDATA[select a.WALK_IDX, a.MEMBER_NUMBER, b.WALK_NUMBER, a.WALK_DATE
+		<![CDATA[select a.WALK_IDX, a.MEMBER_NUMBER, b.WALK_NUMBER, a.WALK_DATE, a.WALK_LOCATION, b.MEMBER_REVIEW
 		from (
 		    select max(WALK_IDX) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as WALK_IDX,
 		        max(MEMBER_NUMBER) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as MEMBER_NUMBER,
-		        max(WALK_DATE) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as WALK_DATE
+		        max(WALK_DATE) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as WALK_DATE,
+		        max(WALK_LOCATION) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as WALK_LOCATION
 		    from WALK
 		    where MEMBER_NUMBER = #{member_number} or MEMBER_NUMBER = #{walk_number}
 		) a 
 		inner join (
-		    select WALK_IDX, MEMBER_NUMBER as WALK_NUMBER
+		    select WALK_IDX, MEMBER_NUMBER as WALK_NUMBER, MEMBER_REVIEW
 		    from WALK_JOIN
-		    where MEMBER_NUMBER = #{member_number} or MEMBER_NUMBER = #{walk_number}
+		    where MEMBER_NUMBER = #{member_number}
+		    and MEMBER_REVIEW is null
 		) b
 		on a.WALK_IDX = b.WALK_IDX]]>
 	</select>
+	
+	<insert id="writeReview" parameterType="memberReview">
+		insert into MEMBER_REVIEW values(member_review_seq.nextval, #{member_number}, #{walk_idx}, SYSDATE, #{member_review})
+	</insert>
+	
+	<update id="updateJoin" parameterType="map">
+		update WALK_JOIN set 
+		<choose>
+			<when test="type.equals('leader')">
+				MEMBER_REVIEW = 'Y' 
+			</when>
+			<otherwise>
+				WALK_REVIEW = 'Y'
+			</otherwise>
+		</choose>
+		where WALK_IDX = #{walk_idx}
+	</update>
 
 </mapper>

@@ -14,6 +14,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="../assets/css/button/button.min.css">
         <link rel="stylesheet" href="../assets/css/button/button.css">
+	    <!-- sweetAlert -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
+		<!-- sweetAlert -->
 	</head>
 <body>
 <!--header-->
@@ -128,8 +132,8 @@
 	                	</a>
 	                </li>
             	</c:if>
+            	
             	<!-- 메세지 리스트 -->
-            	<!-- <li class="active bounceInDown"> -->
             	<c:forEach items="${map.msgLists.chatList}" var="list" varStatus="status">
 	                <li>
 	                	<c:choose>
@@ -249,7 +253,23 @@ function msgClick(idx){
 			          html1 += '</li>';
 				  }
 			  }
-			  html2 += '<button class="ui basic button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">'+notMe+' / 팔로잉 </button>';
+      		  
+      		  if(map.walk != '' && map.walk != null){
+      			html2 += '<input type="hidden" id="walkIdx" value="'+map.walk.walk_idx+'">';
+	      		html2 += '<div id="walkEventMsg" class="input-group" style="margin-bottom:5%;">';
+	  			html2 += '<div class="col-sm-12">';
+				html2 += '<div class="alert fade alert-simple alert-warning alert-dismissible text-left font__family-montserrat ';
+				html2 += 'font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">';
+				html2 += '<button type="button" style="padding:0.4rem 1.25rem;" class="close font__size-18" data-dismiss="alert">';
+				html2 += '<span aria-hidden="true"><i class="fa fa-times blue-cross"></i></span>';
+				html2 += '<span class="sr-only">Close</span></button>';
+				html2 += '<i class="start-icon  fa fa-info-circle faa-shake animated"></i>';
+				html2 += '<strong>'+map.walk.day+", <b>"+map.walk.walk_location+"</b>에서 함께 산책했어요!"+'</strong>';
+				html2 += '<span class="input-group-btn" ><br>';
+				html2 += '<button onclick="writeReview('+map.senderNumber+')" style="float:right; margin-top:-3.9%; padding-right:2%; padding-left:2%; padding-top:1.2%; padding-bottom:1.2%;" class="ui yellow button" type="button">후기 작성</button>';
+				html2 += '</span></div></div></div>';
+      		  }
+      	
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';
@@ -288,14 +308,12 @@ function msgClick(idx){
 			  $('#unreadCount').empty();
   			  if(unreadCount == 0){
   				  $('#msgZone').empty();
-  				  html3='<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+  				  html3 += '<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
   				  $('#msgZone').html(html3);
   			  }else{
   				 $('#unreadCount').html(unreadCount);
   			  }
   			  window.location.href="#sendBtn";
-			  
-			  
 		}
 	  }
 	});
@@ -309,15 +327,106 @@ function msgClick(idx){
                 <ul class="chat" style="font-family: 'Spoqa Han Sans Neo';">
                 <div id="chatDetail" style="font-family: 'Spoqa Han Sans Neo';">
                 
-                <!-- 후기 & 팔로우 -->
+                
+               
+                <!-- 최근 3일이내 산책이 있을 경우 (join된 테이블이 있을때) -->
                 <div class="input-group" style="margin-bottom:5%;">
-            		<input id="msgInput" style="font-family: 'Spoqa Han Sans Neo';" class="form-control border no-shadow no-rounded" placeholder="상대에게 보낼 메시지를 입력해주세요.">
-            		<span class="input-group-btn">
-            		<!-- 최근 3일이내 산책이 있을 경우 (join된 테이블이 있을때) -->
-            			<button id="sendBtn" style="font-family: 'Spoqa Han Sans Neo';" class="ui blue button" type="button">산책 후기 작성</button>
-            			<button class="ui blue basic button" style="margin:auto; background:rgba(0,0,0,.05); font-size:1.0rem; font-family: 'Spoqa Han Sans Neo';">Follow</button>
-            		</span>
-            	</div>
+	                <div class="col-sm-12">
+				        <div class="alert fade alert-simple alert-warning alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
+				          <button type="button" class="close font__size-18" data-dismiss="alert">
+							<span aria-hidden="true">
+								<i class="fa fa-times blue-cross"></i>
+							</span>
+						    <span class="sr-only">Close</span>
+						  </button>
+				          <i class="start-icon  fa fa-info-circle faa-shake animated"></i>
+				          <strong >2021년 3월 11일, 신촌역 근처에서 함께 산책했어요!</strong>
+				          <span class="input-group-btn" ><br>
+	            	      	<button onclick="writeReview()" style="font-family: 'Spoqa Han Sans Neo'; float:right; margin-top:-4.6%; padding-right:2%; 
+	            	      		padding-left:2%; padding-top:1.2%; padding-bottom:1.2%;" class="ui yellow button" type="button">후기 작성</button>
+	            		  </span>
+        				</div>
+        			</div>
+      			</div>
+<script>
+function writeReview(){
+	var name = $('#senName').val();
+	var sender_number = $('#senNo').val();
+	alert(sender_number);
+	Swal.fire({
+	  title: '산책을 함께 하셨나요?',
+	  text: "최근 일주일 내의 산책만 후기 작성이 가능하며, 사진후기를 남겨주시면 산책포인트가 지급됩니다.",
+	  icon: 'warning',
+	  showCancelButton: true,
+	  confirmButtonColor: '#3085d6',
+	  cancelButtonColor: '#d33',
+	  confirmButtonText: '네! 산책했어요!',
+	  cancelButtonText: '아뇨, 못했어요.'
+	}).then((result) => {
+	  if (result.isConfirmed) {
+		  Swal.fire({
+			  title: '한 줄 산책평',
+			  text: name+"님의 산책평 목록에 저장됩니다!",
+			  input: 'text',
+			  inputAttributes: {
+			    autocapitalize: 'off'
+			  },
+			  showCancelButton: true,
+			  confirmButtonText: '작성하기',
+			  cancelButtonText: '취소하기',
+			  showLoaderOnConfirm: true,
+			  preConfirm: (comment) => {
+				  $('#walkEventMsg').empty();
+				  $.ajax({
+						url: "writeReview.do",
+					    type: 'GET',
+					    async: false,
+					    data: {
+					    	walk_idx: $('#walkIdx').val(),
+						    sender_number: sender_number,
+						    content: comment
+						},
+					  success : function(map) {
+						  Swal.fire({
+							  title: '산책 후기 작성하기',
+							  text: "산책 후기 게시판으로 이동합니다.",
+							  icon: 'success',
+							  showCancelButton: true,
+							  confirmButtonColor: '#3085d6',
+							  cancelButtonColor: '#d33',
+							  confirmButtonText: '후기 작성',
+							  cancelButtonText: '작성 취소'
+							}).then((result) => {
+								
+								alert("페이지 이동");
+							})
+					  }
+				  });
+			  }
+		  })
+	  }else{
+		  Swal.fire({
+			  title: '산책 매칭 실패',
+			  text: '산책이 이루어지지 않은 이유를 알려주세요!',
+			  input: 'text',
+			  inputAttributes: {
+			    autocapitalize: 'off'
+			  },
+			  showCancelButton: true,
+			  confirmButtonText: '작성하기',
+			  cancelButtonText: '취소하기',
+			  showLoaderOnConfirm: true,
+			  preConfirm: (comment) => {
+				  alert(comment);
+				  //성사되지 않은 원인에 대한 데이터 수집 필요
+			  }
+		  })
+	  }
+	})
+}
+</script>	
+            		
+            	
             	
                     <li class="left clearfix">
                     	<span class="chat-img pull-left">
@@ -644,7 +753,19 @@ function msgClick(idx){
 				  socket.send(socketMsg);
 			  }
 			  var html2 = '';
-			  html2 += '<button class="ui basic button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo" !important;">'+notMe+' / 팔로잉 </button>';
+			  
+			  sender,name,day,location
+			  
+			  
+			  html2 += '<div class="input-group" style="margin-bottom:5%;">';
+			  html2 += '<input id="msgInput" style="font-family: "Spoqa Han Sans Neo";" class="form-control border no-shadow no-rounded" placeholder="상대에게 보낼 메시지를 입력해주세요.">';
+			  html2 += '<span class="input-group-btn">';
+      		  html2 += '<button id="sendReview" onclick="sendReview('+map.senderNumber+')" style="font-family: "Spoqa Han Sans Neo";" class="ui blue button" type="button">산책 후기 작성</button>';
+      		  //if(){
+      			  //html2 += '<button class="ui blue basic button" style="margin:auto; background:rgba(0,0,0,.05); font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">팔로잉</button></span></div>';
+      	  	  //}else{
+      			  html2 += '<button class="ui blue button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">팔로우</button></span></div>';
+      		  //}
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';

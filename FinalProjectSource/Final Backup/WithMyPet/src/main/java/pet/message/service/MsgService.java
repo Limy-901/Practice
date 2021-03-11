@@ -17,4 +17,5 @@ public interface MsgService {
 	long getUnreadMsg(long member_number);
 	long msgRead(long member_number, long sender_number);
 	MemberReview selectRecentWalk(long member_number, long walk_number);
+	void writeReview(MemberReview memberReview, long member_number);
 }
