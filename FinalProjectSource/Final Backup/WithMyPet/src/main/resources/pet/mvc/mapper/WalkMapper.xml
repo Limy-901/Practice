@@ -127,5 +127,37 @@
     <select id="getMemData" parameterType="long" resultType="pet.member.vo.MemberVO">
     	select * from MEMBER where MEMBER_NUMBER = #{member_number}
     </select>
+    
+    <select id="getDetailData" parameterType="long" resultType="DetailMemberData">
+    	select a.*, b.REVIEW, c.FOLLOWING, c.FOLLOWER from
+		(   select 
+		    MEMBER_NUMBER,
+		    max(WALK_DATE) keep ( dense_rank first order by (SYSDATE-WALK_DATE)) as walk_date,
+		    count(*) as WALK_COUNT
+		    from WALK
+		    group by MEMBER_NUMBER
+		) a,(
+		    select 
+		    MEMBER_NUMBER,
+		    max(MEMBER_REVIEW) keep ( dense_rank first order by (SYSDATE-SENDDATE)) as REVIEW
+		    from MEMBER_REVIEW
+		    group by MEMBER_NUMBER
+		) b,(
+		    select aa.MEMBER_NUMBER, aa.FOLLOWING, nvl(bb.FOLLOWER,0) FOLLOWER 
+		    from
+		    (
+		        select MEMBER_NUMBER, count(*) as FOLLOWING 
+		        from FOLLOW
+		        group by MEMBER_NUMBER
+		    ) aa left join (
+		        select target_MEMBER_NUMBER, count(*) as FOLLOWER 
+		        from FOLLOW 
+		        group by target_MEMBER_NUMBER
+		    ) bb
+		    on aa.MEMBER_NUMBER = bb.target_MEMBER_NUMBER (+)
+		)c
+		where (a.MEMBER_NUMBER = b.MEMBER_NUMBER and a.MEMBER_NUMBER = c.MEMBER_NUMBER)
+		and a.MEMBER_NUMBER = #{member_number}
+    </select>
 
 </mapper>

@@ -151,42 +151,45 @@
         <div class="points center">
           ${content.pet.pet_walkpoint} 포인트
         </div>
-
+        
+        <svg width="110" height="110" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc" class="center">
+         
+        </svg>
+        
+        
       </div>
       <div class="more-info">
-        <h1>${content.member.member_name}</h1>
+        <h1>${content.memberData.member.member_name}</h1>
         <div class="coords">
-          <span>최근 산책일 : </span>
-        </div>
-        <div class="coords">
-          <span>최근 산책평 : </span>
+          <span><b>최근 산책일</b> : ${content.memberData.detail.walk_day}</span><br>
+          <span><b>받은 산책평</b> : "${content.memberData.detail.review}"</span>
         </div>
         <div class="stats">
           <div>
             <div class="title">산책</div>
             <i class="fa fa-trophy"></i>
-            <div class="value">2</div>
+            <div class="value">${content.memberData.detail.walk_count}</div>
           </div>
           <div>
             <div class="title">팔로잉</div>
             <i class="fa fa-group"></i>
-            <div class="value">27</div>
+            <div class="value">${content.memberData.detail.following}</div>
           </div>
           <div>
             <div class="title">팔로워</div>
             <i class="fa fa-group"></i>
-            <div class="value">123</div>
+            <div class="value">${content.memberData.detail.follower}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="general">
-      <h1 style="color:#FFB446; margin-top:3%;">${content.member.member_name}</h1><br>
-      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';">반려 동물 : ${content.pet.pet_name}</p>
-      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';">성별 : ${content.pet.pet_sex}</p>
-      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';">나이 : ${content.pet.pet_age}</p>
-      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';">주요 지역 : ${content.pet.pet_walkarea}</p>
-      <span class="more" style="font-size:1.0rem;">회원 정보 더 보기</span>
+      <h1 style="color:#FFB446; margin-top:3%;">${content.memberData.member.member_name}</h1><br>
+      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';"><b>반려 동물</b> : ${content.pet.pet_name}</p>
+      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';"><b>성별</b> : ${content.pet.pet_sex}</p>
+      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';"><b>나이</b> : ${content.pet.pet_age}</p>
+      <p style="text-align:center;font-family: 'Spoqa Han Sans Neo';"><b>주요 지역</b> : ${content.pet.pet_walkarea}</p>
+      <span class="more" style="font-size:1.0rem;">Mouse over</span>
     </div>
   </div>
 </div>
@@ -401,7 +404,7 @@ function updateHeart(){
 	            <img src="../assets/images/g1.jpg" class="img-fluid radius-image mt-1" alt="blog-post-image">
 	          </div>        
 		       <div class="col-md-8 align-self" style="font-family: 'Spoqa Han Sans Neo';">
-		          <p style="font-family: 'Spoqa Han Sans Neo';">${vo.member_name}</p>
+		          <p style="font-family: 'Spoqa Han Sans Neo';">${login.member_name}</p>
 		          <p style="font-family: 'Spoqa Han Sans Neo';">${mpvo.pet_name}, ${mpvo.pet_sex}, ${mpvo.pet_age}</p>       
 		          <p style="font-family: 'Spoqa Han Sans Neo';">${mpvo.walkarea}</p>
 		       </div>

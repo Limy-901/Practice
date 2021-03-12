@@ -9,6 +9,7 @@
    	   <typeAlias alias="WalkListVo" type="pet.walk.vo.WalkListVo"/>
    	   <typeAlias alias="WalkComment" type="pet.walk.vo.Comment"/>
    	   <typeAlias alias="joinVo" type="pet.walk.vo.joinVo"/>
+   	   <typeAlias alias="DetailMemberData" type="pet.walk.vo.DetailMemberData"/>
    	   
    	   <typeAlias alias="Option" type="pet.mvc.shopdomain.Option"/>
    	   <typeAlias alias="Cart" type="pet.mvc.shopdomain.Cart"/>

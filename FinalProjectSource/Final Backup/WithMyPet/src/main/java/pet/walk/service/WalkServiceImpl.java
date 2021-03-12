@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.log4j.Log4j;
@@ -13,6 +15,7 @@ import pet.member.vo.MypagePetVO;
 import pet.mvc.mapper.WalkMapper;
 import pet.walk.vo.CmtVo;
 import pet.walk.vo.Comment;
+import pet.walk.vo.DetailMemberData;
 import pet.walk.vo.Walk;
 import pet.walk.vo.WalkListResult;
 import pet.walk.vo.WalkListVo;
@@ -172,11 +175,24 @@ public class WalkServiceImpl implements WalkService {
 		MypagePetVO vo = walkMapper.getCmtPetData(member_number);
 		return vo;
 	}
-
+	
+	// 산책 작성자 기본정보 가져오기
 	@Override
-	public MemberVO getMemData(long member_number) {
+	public Hashtable<String, Object> getMemData(long member_number) {
+		Hashtable<String, Object> map = new Hashtable<String,Object>();
 		MemberVO vo = walkMapper.getMemData(member_number);
-		return vo;
+		DetailMemberData detail = walkMapper.getDetailData(member_number);
+		if(detail != null) {
+			Date origin = detail.getWalk_date();
+			DateFormat dayForm = new SimpleDateFormat("yyyy년 MM월 dd일");
+			String day = dayForm.format(origin);
+			long newCount = detail.getWalk_count() - 1;
+			detail.setWalk_count(newCount);
+			detail.setWalk_day(day);
+			map.put("detail",detail);
+		}
+		map.put("member",vo);
+		return map;
 	}
 	
 	

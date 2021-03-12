@@ -15,6 +15,6 @@ public interface MessageMapper {
 	void msgRead(@Param("member_number") long member_number, @Param("sender_number") long sender_number);
 	MemberReview selectRecentWalk(@Param("member_number") long member_number, @Param("walk_number") long walk_number);
 	void writeReview(MemberReview memberReview);
-	void updateJoin(@Param("type") String type, @Param("walk_idx") long walk_idx);
+	void updateJoin(@Param("walk_idx") long walk_idx, @Param("member_number") long member_number);
 	
 }

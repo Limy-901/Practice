@@ -70,15 +70,8 @@
 	
 	<update id="updateJoin" parameterType="map">
 		update WALK_JOIN set 
-		<choose>
-			<when test="type.equals('leader')">
-				MEMBER_REVIEW = 'Y' 
-			</when>
-			<otherwise>
-				WALK_REVIEW = 'Y'
-			</otherwise>
-		</choose>
-		where WALK_IDX = #{walk_idx}
+		MEMBER_REVIEW = 'Y'
+		where (WALK_IDX = #{walk_idx} and MEMBER_NUMBER = #{member_number})
 	</update>
 
 </mapper>

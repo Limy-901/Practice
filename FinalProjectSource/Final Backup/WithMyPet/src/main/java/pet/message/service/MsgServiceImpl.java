@@ -140,18 +140,15 @@ public class MsgServiceImpl implements MsgService {
 	// 산책 한줄평 작성, 트랜잭션
 	@Override
 	public void writeReview(MemberReview memberReview, long member_number) {
-		// 산책 후기 체크를 위해 주최자, 참가자 구분, 타입에 따라 다른 컬럼에 체크
-		String type = null;
-		// 참가자인 경우
-		if(memberReview.getMember_number() != member_number) {
-			type = "walker";
+		// 주최/참가에 따라서, insert시 member_number를 변경해줌 (myBatis에서 분기하지 않으려고)
+		log.info("####이거가 memberReview"+memberReview);
+		if(memberReview.getWalk_number() == member_number) {// 내가 참가자일때
+			long origin = memberReview.getMember_number();
 			memberReview.setMember_number(member_number);
-			msgMapper.updateJoin(type,memberReview.getWalk_idx());
-		}else {
-		// 주최자인 경우
-			type = "leader";
-			msgMapper.updateJoin(type,memberReview.getWalk_idx());
+			log.info("####바꿔줌"+origin+"을 "+memberReview.getMember_number());
 		}
+		log.info("####Here"+memberReview.getWalk_idx()+"번 글,"+member_number);
+		msgMapper.updateJoin(memberReview.getWalk_idx(),member_number);
 		msgMapper.writeReview(memberReview);
 	}
 

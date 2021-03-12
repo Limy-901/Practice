@@ -157,12 +157,12 @@ public class WalkController {
 		String time = timeForm.format(origin);
 		Hashtable<String,Object> map = new Hashtable<String,Object>();
 		// 멤버 + 반려동물 정보
-		MemberVO member = walkService.getMemData(dto.getMember_number());
+		Hashtable<String, Object> memberData = walkService.getMemData(dto.getMember_number());
 		MypagePetVO pet = walkService.getCmtPetData(dto.getMember_number());
 		map.put("day",day);
 		map.put("time",time);
 		map.put("dto",dto);
-		map.put("member",member);
+		map.put("memberData",memberData);
 		map.put("pet",pet);
 		ModelAndView mv = new ModelAndView("walk/walkblog","content",map);
 		return mv;
