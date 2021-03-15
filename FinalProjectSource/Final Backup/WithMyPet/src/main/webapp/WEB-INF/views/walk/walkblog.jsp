@@ -27,6 +27,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
 	<!-- sweetAlert -->
+	<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
  
 </head>
 
@@ -131,7 +132,7 @@
 	   <div class="img-circle img-circle-sm">
           <img src="../assets/images/f2.jpg" class="mr-3" alt="...">
        </div>
-       <p class="name" style="font-family: 'Spoqa Han Sans Neo';"><b>${content.dto.walk_writer}</b>님이 <b>${content.dto.walk_location}</b> 에서 산책할 친구를 기다리고 있어요!</p>
+       <p class="name"><a href="../msg/chat.do?member_number=${content.dto.member_number}" style="font-family: 'Spoqa Han Sans Neo';"><b>${content.dto.walk_writer}</b></a>님이 <b>${content.dto.walk_location}</b> 에서 산책할 친구를 기다리고 있어요!</p>
     </div>
     <div class="blog-title">
       <h1 style="color:#FFB446;font-family: 'Spoqa Han Sans Neo';"><a href="#" style="font-family: 'Spoqa Han Sans Neo';" >${content.dto.walk_subject}</a></h1>
@@ -248,15 +249,46 @@ function displayMarker(place) {
   
  <!-- 좋아요 버튼 -->
   <div class="blog-footer" style="font-family: 'Spoqa Han Sans Neo';">
-      <div style="display:relative; font-size: 30px; float:right;">
-	      <a onclick='updateHeart()'><img style="width:40px; float:right;" src="../assets/images/icon/heart.png"></img></a>
-	  </div>
-	  <div id="heartZone" style="margin-left:87%; color:#FFB446;font-family: 'Spoqa Han Sans Neo'; font-size:1.34rem;">${content.dto.like}</div><br/>
+  <a href="javascript:sendLink()" style="float:right; padding-left:2%;"><img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" /></a>
+  	<c:choose>
+  	
+  		<c:when test="${empty content.likeToggle}">
+  			<div id="colorHeart" style="display:relative; font-size: 30px; float:right;">
+		      <a onclick='updateHeart()'><img style="width:35px; float:right;" src="../assets/images/icon/emptyHeart.png"></img></a>
+		 	</div>
+  		</c:when>
+  		
+  		<c:otherwise>
+  			<div id="colorHeart" style="display:relative; font-size: 30px; float:right;">
+		      <a onclick='deleteHeart()'><img style="width:35px; float:right;" src="../assets/images/icon/heart.png"></img></a>
+		  </div>
+  		</c:otherwise>
+	      
+	</c:choose>
+	  <div id="heartZone" style="margin-left:84%; color:#FFB446;font-family: 'Spoqa Han Sans Neo'; font-size:1.34rem;">${content.dto.like}</div><br/>
+	  
+	  
   </div>
 <script>
+//카카오 공유하기
+Kakao.init('63be5e5f8d770d2796e1e45e8fcfebbd');
+function sendLink() {
+ Kakao.Link.sendDefault({
+   objectType: 'feed',
+   content: {
+     title: '함께 산책해요 :: With My Pet',
+     description: '우리 강아지의 산책 친구',
+     imageUrl: 'https://postfiles.pstatic.net/MjAyMTAzMDJfMTY1/MDAxNjE0NjgxMzk0MjY2.iMWrCceWl_Bat-8WehW_MPBWhiGWa_Zt3wpLYBrYrPgg.XAMxlGBwAYIdppCdX2H5CxObPeC-aYmLTvcYNXDLGAog.JPEG.misty901/Corg.jpg?type=w773',
+     link: {
+ 	  mobileWebUrl: 'http://localhost:8080/walk/blog.do?idx='+${content.dto.walk_idx},
+       webUrl: 'http://localhost:8080/walk/blog.do?idx='+${content.dto.walk_idx}
+     }
+   }
+ })
+}
+
+// 좋아요 버튼 toggle 1
 function updateHeart(){
-	//세션에서 로그인정보 가져와서 멤버넘버 저장, 임시로 테스트
-	//var memNo = ?
 	var walk_idx = ${content.dto.walk_idx};
 	$.ajax({
 		  url: "like.do",
@@ -264,6 +296,26 @@ function updateHeart(){
 		  data: { walk_idx: walk_idx },
 		  success : function(data){
 			  $('#heartZone').empty();
+			  $('#colorHeart').empty();
+			  var html2 = '<a onclick="deleteHeart()"><img style="width:35px; float:right;" src="../assets/images/icon/heart.png"></img></a>';
+			  $('#colorHeart').html(html2);
+			  var html = data;
+			  $('#heartZone').html(html);
+		  }
+	});
+}
+// 좋아요 버튼 toggle 2
+function deleteHeart(){
+	var walk_idx = ${content.dto.walk_idx};
+	$.ajax({
+		  url: "deleteLike.do",
+		  type: 'GET',
+		  data: { walk_idx: walk_idx },
+		  success : function(data){
+			  $('#heartZone').empty();
+			  $('#colorHeart').empty();
+			  var html2 = '<a onclick="updateHeart()"><img style="width:35px; float:right;" src="../assets/images/icon/emptyHeart.png"></img></a>';
+			  $('#colorHeart').html(html2);
 			  var html = data;
 			  $('#heartZone').html(html);
 		  }

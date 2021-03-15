@@ -98,6 +98,10 @@
     	insert into WALK_LIKE values( #{walk_idx}, #{member_number} )
     </insert>
     
+    <delete id="deleteHeart" parameterType="joinVo">
+    	delete from WALK_LIKE where walk_idx = #{walk_idx} and member_number = #{member_number}
+    </delete>
+    
     <select id="checkJoin" parameterType="joinVo" resultType="int">
     	select count(*) from WALK_JOIN where WALK_IDX=#{walk_idx} and MEMBER_NUMBER=#{member_number}
     </select>
@@ -158,6 +162,10 @@
 		)c
 		where (a.MEMBER_NUMBER = b.MEMBER_NUMBER and a.MEMBER_NUMBER = c.MEMBER_NUMBER)
 		and a.MEMBER_NUMBER = #{member_number}
+    </select>
+    
+    <select id="checkLikeToggle" resultType="long" parameterType="map">
+    	select count(*) from WALK_LIKE where WALK_IDX = #{walk_idx} and MEMBER_NUMBER = #{member_number}
     </select>
 
 </mapper>

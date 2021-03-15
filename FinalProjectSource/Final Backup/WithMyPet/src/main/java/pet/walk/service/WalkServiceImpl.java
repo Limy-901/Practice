@@ -9,6 +9,8 @@ import java.util.Hashtable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.extern.log4j.Log4j;
 import pet.member.vo.MemberVO;
 import pet.member.vo.MypagePetVO;
@@ -84,7 +86,7 @@ public class WalkServiceImpl implements WalkService {
 		return new WalkListResult(cp, ps, walkMapper.totalWalk(orderType, keyword), lists, cmtList);
 	}
 
-	// 산책 blog 컨텐츠 불러오기
+	// 산책 상세 페이지
 	@Override
 	public Walk getWalk(long idx) {
 		Walk dto = walkMapper.getWalk(idx);
@@ -162,6 +164,12 @@ public class WalkServiceImpl implements WalkService {
 	public void addHeart(joinVo vo) {
 		walkMapper.addHeart(vo);
 	}
+
+	// 좋아요 취소
+	@Override
+	public void deleteHeart(joinVo vo) {
+		walkMapper.deleteHeart(vo);
+	}
 	
 	// 좋아요 개수 카운트
 	@Override
@@ -194,7 +202,12 @@ public class WalkServiceImpl implements WalkService {
 		map.put("member",vo);
 		return map;
 	}
-	
-	
 
+	// 내가 좋아요 눌렀는지 확인
+	@Override
+	public long checkLikeToggle(long walk_idx, long member_number) {
+		long check = walkMapper.checkLikeToggle(walk_idx, member_number);
+		if(check == 0) log.info("좋아요 안누름");
+		return check;
+	}
 }

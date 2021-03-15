@@ -45,8 +45,8 @@
                          	산 책 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';" >
-                      	<a class="dropdown-item" href="walk/list.do?cp=1" >산책모집 </a>
-                          <a class="dropdown-item" href="walk/board.do">산책후기 </a>
+                      	<a class="dropdown-item" href="../walk/list.do?cp=1">산책모집 </a>
+                          <a class="dropdown-item" href="../board/list.do?board_idx=4">산책후기 </a>
                       </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -55,9 +55,9 @@
                          	쇼 핑 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
-                      	<a class="dropdown-item" href="product?catgo_code=9">쇼핑하기</a>
-                          <a class="dropdown-item" href="cart">장바구니</a>
-                          <a class="dropdown-item" href="order">결제</a>
+                      	<a class="dropdown-item" href="../product?catgo_code=9">쇼핑하기</a>
+                          <a class="dropdown-item" href="../cart">장바구니</a>
+                          <a class="dropdown-item" href="../order">결제</a>
                       </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -66,8 +66,8 @@
                          	 커뮤니티 <span class="fa fa-angle-down"></span>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="font-family: 'Spoqa Han Sans Neo';">
-                          <a class="dropdown-item" href="board/list.do">공지사항</a>
-                          <a class="dropdown-item" href="board/list.do">일상이야기</a>
+                          <a class="dropdown-item" href="../board/list.do">공지사항</a>
+                          <a class="dropdown-item" href="../board/list.do">일상이야기</a>
                       </div>
                   </li>
                   <li class="nav-item">
@@ -97,7 +97,7 @@
           </div>
           <div>
           <!-- 읽지 않은 메시지 확인 -->
-          	<c:choose>
+          	 <c:choose>
 	          	<c:when test="${unread eq 0}">
 	          		<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>
 	          	</c:when>
@@ -184,7 +184,6 @@ function msgClick(idx){
 	var sender = $('#senNo').val();
 	$('#senNo').val(idx);
 	var notMe;
-	
 	$.ajax({
 		url: "selectChat.do",
 	    type: 'GET',
@@ -253,7 +252,6 @@ function msgClick(idx){
 			          html1 += '</li>';
 				  }
 			  }
-      		  
       		  if(map.walk != '' && map.walk != null){
       			html2 += '<input type="hidden" id="walkIdx" value="'+map.walk.walk_idx+'">';
 	      		html2 += '<div id="walkEventMsg" class="input-group" style="margin-bottom:5%;">';
@@ -269,7 +267,6 @@ function msgClick(idx){
 				html2 += '<button onclick="writeReview('+map.senderNumber+')" style="float:right; margin-top:-3.9%; padding-right:2%; padding-left:2%; padding-top:1.2%; padding-bottom:1.2%;" class="ui yellow button" type="button">후기 작성</button>';
 				html2 += '</span></div></div></div>';
       		  }
-      	
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';
@@ -300,7 +297,6 @@ function msgClick(idx){
 				  }
 			  }
 			  html2+= '<input type="hidden" id="senName" value="'+notMe+'">';
-			  
 			  $('#chatDetail').empty();
 			  $('#chatDetail').html(html2);
 			  $('#chatList').html(html1);
@@ -320,34 +316,12 @@ function msgClick(idx){
 }
 </script>
         
-        <!--=========================================================-->
-        <!-- selected chat -->
     	<div class="col-md-8 bg-white ">
-            <div class="chat-message">
+            <div class="chat-message" style="min-height:400px;">
                 <ul class="chat" style="font-family: 'Spoqa Han Sans Neo';">
                 <div id="chatDetail" style="font-family: 'Spoqa Han Sans Neo';">
-                
-                
                
-                <!-- 최근 3일이내 산책이 있을 경우 (join된 테이블이 있을때) -->
-                <div class="input-group" style="margin-bottom:5%;">
-	                <div class="col-sm-12">
-				        <div class="alert fade alert-simple alert-warning alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-				          <button type="button" class="close font__size-18" data-dismiss="alert">
-							<span aria-hidden="true">
-								<i class="fa fa-times blue-cross"></i>
-							</span>
-						    <span class="sr-only">Close</span>
-						  </button>
-				          <i class="start-icon  fa fa-info-circle faa-shake animated"></i>
-				          <strong >2021년 3월 11일, 신촌역 근처에서 함께 산책했어요!</strong>
-				          <span class="input-group-btn" ><br>
-	            	      	<button onclick="writeReview()" style="font-family: 'Spoqa Han Sans Neo'; float:right; margin-top:-4.6%; padding-right:2%; 
-	            	      		padding-left:2%; padding-top:1.2%; padding-bottom:1.2%;" class="ui yellow button" type="button">후기 작성</button>
-	            		  </span>
-        				</div>
-        			</div>
-      			</div>
+               
 <script>
 function writeReview(){
 	var name = $('#senName').val();
@@ -426,106 +400,7 @@ function writeReview(){
 }
 </script>	
             		
-            	
-            	
-                    <li class="left clearfix">
-                    	<span class="chat-img pull-left">
-                    		<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">John Doe</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    		</p>
-                    	</div>
-                    </li>
-                    <li class="right clearfix">
-                    	<span class="chat-img pull-right">
-                    		<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">Sarah</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
-                    		</p>
-                    	</div>
-                    </li>
-                    <li class="left clearfix">
-                        <span class="chat-img pull-left">
-                    		<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">John Doe</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    		</p>
-                    	</div>
-                    </li>
-                    <li class="right clearfix">
-                        <span class="chat-img pull-right">
-                    		<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">Sarah</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
-                    		</p>
-                    	</div>
-                    </li>                    
-                    <li class="left clearfix">
-                        <span class="chat-img pull-left">
-                    		<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">John Doe</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    		</p>
-                    	</div>
-                    </li>
-                    <li class="right clearfix">
-                        <span class="chat-img pull-right">
-                    		<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">Sarah</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
-                    		</p>
-                    	</div>
-                    </li>
-                    <li class="right clearfix">
-                        <span class="chat-img pull-right">
-                    		<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
-                    	</span>
-                    	<div class="chat-body clearfix">
-                    		<div class="header">
-                    			<strong class="primary-font">Sarah</strong>
-                    			<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
-                    		</div>
-                    		<p>
-                    			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
-                    		</p>
-                    	</div>
-                    </li>
+                    
                     </div>                    
                 </ul>
             </div>
@@ -536,14 +411,12 @@ function writeReview(){
             			<input type="hidden" name="senNo" id="senNo">
             			<button id="sendBtn" style="font-family: 'Spoqa Han Sans Neo';" class="ui blue button" type="button">전송</button>
             		</span>
-            	</div><!-- /input-group -->
+            	</div>
             </div>            
 		</div>        
 	</div>
 </div>
   
-  
-  <!-- footer-28 block -->
 <section class="w3l-footer">
   <footer class="footer-28">
     <div class="footer-bg-layer">
@@ -623,10 +496,6 @@ function writeReview(){
   </section>
  
 
-
-
-<script>
-</script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="../assets/js/theme-change.js"></script>
   <script src="../assets/js/owl.carousel.js"></script>
@@ -660,12 +529,180 @@ function writeReview(){
           }
         }
       })
-    })
-  </script>
-  <!-- //script -->
-  <!-- script for tesimonials carousel slider -->
-<script>
-  $(document).ready(function () {
+      // 마이페이지 > 해당 대상과의 메세지로 바로 이동
+      var DirectNo = '${map.directMember}';
+      if(DirectNo != null && DirectNo != ''){
+      	Direct(DirectNo);
+      }
+      function Direct(DirectNo){
+   		 var msg = $('#msgInput').val();
+   		 var sender = $('#senNo').val();
+   		 $('#senNo').val(DirectNo);
+   		 var notMe;
+    	  $.ajax({
+    			url: "selectChat.do",
+    		    type: 'GET',
+    		    async: false,
+    		    data: {
+    			    sender_number: DirectNo
+    			},
+    			dataType:'json',
+    		  success : function(map) {
+    			  $('#chatList').empty();
+    			  var html1='';
+  				  var html2='';
+  				  var myName = '${login.member_name}';
+				  var myNo = '${login.member_number}';
+
+    			if(map.length == 0){ // 없는 상대이면
+    				alert("잘못된 상대입니다! 다른 상대를 선택해주세요.");
+    				window.location.href = "#";
+    			} else if (map.msgLists.chatList == '' && map.detailLists.chatList == ''){ // 아무와도 대화 한 적이 없으면
+	  				 notMe = map.senderName;
+	  				 $('#senName').text(notMe);
+	  				// 가상 메시지
+	  				  html1 += '<center>';
+			          html1 += '<div class="last-message text-muted" style="font-family: "Spoqa Han Sans Neo"; ">대화 상대 없음</div>';
+			          html1 += '</center>';
+	  				  html2 += '<li class="right clearfix">';
+					  html2 += '<span class="chat-img pull-right">';
+					  html2 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">';
+					  html2 += '</span>';
+					  html2 += '<div class="chat-body clearfix">';
+					  html2 += '<div class="header">';
+					  html2 += '<strong class="primary-font">'+myName+'</strong>\</div>';
+					  html2 += '<p>아직 <b>'+map.senderName+'</b>님과 나눈 대화가 없네요! 먼저 메시지를 보내보세요.</p></div></li>';
+    				  html2 += '<input type="hidden" id="senName" value="'+map.senderName+'">';
+    				  $('#chatDetail').empty();
+    				  $('#chatDetail').html(html2);
+    				  $('#chatList').html(html1);
+    				  var unreadCount = map.unread.value;
+    				  $('#unreadCount').empty();
+    	  			  if(unreadCount == 0){
+    	  				  $('#msgZone').empty();
+    	  				  html3 += '<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+    	  				  $('#msgZone').html(html3);
+    	  			  }else{
+    	  				 $('#unreadCount').html(unreadCount);
+    	  			  }
+    	  			  window.location.href="#sendBtn";
+    				  
+    			} else if (map.detailLists != 0) { // 대화 한 적 있으면
+    				  if(map.detailLists.chatList[0].member_name != myName){
+    					  notMe = map.detailLists.chatList[0].member_name;
+    				  }else{
+    					  notMe = map.detailLists.chatList[0].sender_name;
+    				  }
+    				  $('#senName').text(notMe);
+    				  
+    				  for(var i = 0; i < map.msgLists.chatList.length; i++){
+    				      if(map.msgLists.chatList[i].sender_number == map.senderNumber || map.msgLists.chatList[i].member_number == map.senderNumber) {
+    						  html1 += '<li class="active bounceInDown">';
+    		               	  html1 += '<a class="clearfix">';
+    				          html1 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">';
+    				          html1 += '<div class="friend-name">';	
+    				          if(map.msgLists.chatList[i].member_name != myName){
+    				          	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].member_name+'</strong></div>';
+    				          } else{
+    				        	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+    				          }
+    				          html1 += '<div class="last-message text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].msg_content+'</div>';
+    				          html1 += '<small class="time text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].time+'</small>';
+    				          if(map.msgLists.chatList[i].sender_number == myNo && map.msgLists.chatList[i].opendate == null) {
+    				        	  html1 += '<small class="chat-alert label label-danger" style="font-family: "Spoqa Han Sans Neo";">1</small>';
+    				          } else{
+    				        	  html1 += '<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>';
+    				          }
+    				          html1 += '</a>';
+    				          html1 += '</li>';
+    					  }else{
+    						  html1 += '<li>';
+    						  if(map.msgLists.chatList[i].member_name != myName){
+    				          	html1 += '<a onclick="msgClick('+map.msgLists.chatList[i].member_number+')" class="clearfix">';
+    				          } else{
+    				        	html1 += '<a onclick="msgClick('+map.msgLists.chatList[i].sender_number+')" class="clearfix">';
+    				          }
+    				          html1 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">';
+    				          html1 += '<div class="friend-name">';	
+    				          if(map.msgLists.chatList[i].member_name != myName){
+    				          	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].member_name+'</strong></div>';
+    				          } else{
+    				        	html1 += '<strong style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].sender_name+'</strong></div>';
+    				          }
+    				          html1 += '<div class="last-message text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].msg_content+'</div>';
+    				          html1 += '<small class="time text-muted" style="font-family: "Spoqa Han Sans Neo";">'+map.msgLists.chatList[i].time+'</small>';
+    				          if(map.msgLists.chatList[i].sender_number == myNo && map.msgLists.chatList[i].opendate == null) {
+    				        	  html1 += '<small class="chat-alert label label-danger">1</small>';
+    				          } else {
+    				        	  html1 += '<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>';
+    				          }
+    				          html1 += '</a>';
+    				          html1 += '</li>';
+    					  }
+    				  }
+    	      		  if(map.walk != '' && map.walk != null){
+    	      			html2 += '<input type="hidden" id="walkIdx" value="'+map.walk.walk_idx+'">';
+    		      		html2 += '<div id="walkEventMsg" class="input-group" style="margin-bottom:5%;">';
+    		  			html2 += '<div class="col-sm-12">';
+    					html2 += '<div class="alert fade alert-simple alert-warning alert-dismissible text-left font__family-montserrat ';
+    					html2 += 'font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">';
+    					html2 += '<button type="button" style="padding:0.4rem 1.25rem;" class="close font__size-18" data-dismiss="alert">';
+    					html2 += '<span aria-hidden="true"><i class="fa fa-times blue-cross"></i></span>';
+    					html2 += '<span class="sr-only">Close</span></button>';
+    					html2 += '<i class="start-icon  fa fa-info-circle faa-shake animated"></i>';
+    					html2 += '<strong>'+map.walk.day+", <b>"+map.walk.walk_location+"</b>에서 함께 산책했어요!"+'</strong>';
+    					html2 += '<span class="input-group-btn" ><br>';
+    					html2 += '<button onclick="writeReview('+map.senderNumber+')" style="float:right; margin-top:-3.9%; padding-right:2%; padding-left:2%; padding-top:1.2%; padding-bottom:1.2%;" class="ui yellow button" type="button">후기 작성</button>';
+    					html2 += '</span></div></div></div>';
+    	      		  }
+    				  for(var i = 0; i < map.detailLists.chatList.length; i++) {
+    					  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
+    						  html2 += '<li class="left clearfix">';
+    						  html2 += '<span class="chat-img pull-left">';
+    						  html2 += '<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">';
+    						  html2 += '</span>';
+    						  html2 += '<div class="chat-body clearfix">';
+    						  html2 += '<div class="header">';
+    						  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+    						  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+    						  html2 += '</div>';
+    						  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+    						  html2 += '</div>';
+    						  html2 += '</li>';
+    					  }else if(map.detailLists.chatList[i].sender_number == map.senderNumber) { // 사용자가 수신자일때
+    						  html2 += '<li class="right clearfix">';
+    						  html2 += '<span class="chat-img pull-right">';
+    						  html2 += '<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">';
+    						  html2 += '</span>';
+    						  html2 += '<div class="chat-body clearfix">';
+    						  html2 += '<div class="header">';
+    						  html2 += '<strong class="primary-font">'+map.detailLists.chatList[i].member_name+'</strong>';
+    						  html2 += '<small class="pull-right text-muted"><i class="fa fa-clock-o"></i>'+map.detailLists.chatList[i].time+'</small>';
+    						  html2 += '</div>';
+    						  html2 += '<p>'+map.detailLists.chatList[i].msg_content+'</p>';
+    						  html2 += '</div>';
+    						  html2 += '</li>';
+    					  }
+    				  }
+    				  html2+= '<input type="hidden" id="senName" value="'+notMe+'">';
+    				  $('#chatDetail').empty();
+    				  $('#chatDetail').html(html2);
+    				  $('#chatList').html(html1);
+    				  var unreadCount = map.unread.value;
+    				  $('#unreadCount').empty();
+    	  			  if(unreadCount == 0){
+    	  				  $('#msgZone').empty();
+    	  				  html3 += '<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+    	  				  $('#msgZone').html(html3);
+    	  			  }else{
+    	  				 $('#unreadCount').html(unreadCount);
+    	  			  }
+    	  			  window.location.href="#sendBtn";
+    			}
+    		  }
+    		});
+	  }
+    
     $("#owl-demo1").owlCarousel({
       loop: true,
       margin: 20,
@@ -686,8 +723,8 @@ function writeReview(){
           loop: false
         }
       }
-    })
-  })
+    });
+});
 </script>
 <!-- //script for tesimonials carousel slider -->
   <!-- stats number counter-->
@@ -696,8 +733,6 @@ function writeReview(){
   <script>
     $('.counter').countUp();
   </script>
-  <!-- //stats number counter -->
-  <!-- video popup -->
 <script src="../assets/js/jquery.magnific-popup.min.js"></script>
 <script>
   $(document).ready(function () {
@@ -724,8 +759,6 @@ function writeReview(){
       mainClass: 'my-mfp-slide-bottom'
     });
   });
-  
-  
   //send 버튼 클릭시 (메시지 insert)
   $('#sendBtn').on('click', function(event){
 	  var msg = $('#msgInput').val();
@@ -754,18 +787,12 @@ function writeReview(){
 			  }
 			  var html2 = '';
 			  
-			  sender,name,day,location
-			  
-			  
 			  html2 += '<div class="input-group" style="margin-bottom:5%;">';
 			  html2 += '<input id="msgInput" style="font-family: "Spoqa Han Sans Neo";" class="form-control border no-shadow no-rounded" placeholder="상대에게 보낼 메시지를 입력해주세요.">';
 			  html2 += '<span class="input-group-btn">';
       		  html2 += '<button id="sendReview" onclick="sendReview('+map.senderNumber+')" style="font-family: "Spoqa Han Sans Neo";" class="ui blue button" type="button">산책 후기 작성</button>';
-      		  //if(){
-      			  //html2 += '<button class="ui blue basic button" style="margin:auto; background:rgba(0,0,0,.05); font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">팔로잉</button></span></div>';
-      	  	  //}else{
-      			  html2 += '<button class="ui blue button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">팔로우</button></span></div>';
-      		  //}
+      		  html2 += '<button class="ui blue button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">팔로우</button></span></div>';
+
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';
@@ -798,47 +825,47 @@ function writeReview(){
 			  html2+= '<input type="hidden" id="senName" value="'+notMe+'">';
 			  $('#chatDetail').empty();
 			  $('#chatDetail').html(html2);
+			  var unreadCount = map.unread.value;
+			  $('#unreadCount').empty();
+  			  if(unreadCount == 0){
+  				  $('#msgZone').empty();
+  				  html3='<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+  				  $('#msgZone').html(html3);
+  			  }else{
+  				 $('#unreadCount').html(unreadCount);
+  			  }
 		  }
 	  });
-	});
-</script>
-<script>
-</script>
-<!-- //video popup -->
-
-  <!--/MENU-JS-->
-  <script>
-    $(window).on("scroll", function () {
-      var scroll = $(window).scrollTop();
-      if (scroll >= 80) {
-        $("#site-header").addClass("nav-fixed");
-      } else {
-        $("#site-header").removeClass("nav-fixed");
-      }
-    });
-    //Main navigation Active Class Add Remove
-    $(".navbar-toggler").on("click", function () {
-      $("header").toggleClass("active");
-    });
-    $(document).on("ready", function () {
+  });
+  
+  $(window).on("scroll", function () {
+     var scroll = $(window).scrollTop();
+     if (scroll >= 80) {
+       $("#site-header").addClass("nav-fixed");
+     } else {
+       $("#site-header").removeClass("nav-fixed");
+     }
+  });
+  //Main navigation Active Class Add Remove
+  $(".navbar-toggler").on("click", function () {
+    $("header").toggleClass("active");
+  });
+    
+  $(document).on("ready", function () {
+    if ($(window).width() > 991) {
+      $("header").removeClass("active");
+    }
+    $(window).on("resize", function () {
       if ($(window).width() > 991) {
         $("header").removeClass("active");
       }
-      $(window).on("resize", function () {
-        if ($(window).width() > 991) {
-          $("header").removeClass("active");
-        }
-      });
     });
-  </script>
-  <script>
+  });
+    
   // 웹소켓 연결
   var sender = $('#senNo').val();
   var socket = null;
-  $(document).ready(function(){
-	  connectWS();
-  })
-  
+  $(document).ready(function(){ connectWS(); })
   function connectWS(){
   	var url = "ws://localhost:8080/replyEcho";
   	var ws = new WebSocket(url);
@@ -943,11 +970,9 @@ function writeReview(){
   	 }
   }
   </script>
-
       <script src="../assets/js/bootstrap.min.js"></script>
       <script src="../assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
       <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
 	  <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  
 	</body>
 </html>

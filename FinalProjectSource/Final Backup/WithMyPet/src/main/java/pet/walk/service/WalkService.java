@@ -22,7 +22,9 @@ public interface WalkService {
 	boolean insertWalkJoin(joinVo vo, long cmtIdx);
 	long selectByCmtIdx(long cmtIdx);
 	void addHeart(joinVo vo);
+	void deleteHeart(joinVo vo);
 	int getWalkLike(long idx);
 	MypagePetVO getCmtPetData(long member_number);
 	Hashtable<String, Object> getMemData(long member_number);
+	long checkLikeToggle(long walk_idx, long member_number);
 }

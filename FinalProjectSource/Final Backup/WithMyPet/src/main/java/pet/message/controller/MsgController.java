@@ -1,11 +1,13 @@
 package pet.message.controller;
 
 import java.util.Hashtable;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import lombok.AllArgsConstructor;
@@ -23,12 +25,14 @@ import pet.message.vo.MsgListResult;
 public class MsgController {
 	MsgService msgService;
 	
-	//메시지 메인화면
+	// 메시지 메인화면
 	@RequestMapping("chat.do")
-	public ModelAndView chat(HttpSession session) {
+	public ModelAndView chat(HttpServletRequest request, HttpSession session, 
+	@RequestParam (defaultValue="0", required=false) long member_number) {
+		Hashtable<String, Object> map = new Hashtable<String, Object>();
+		if(member_number != 0) map.put("directMember",member_number);
 		MemberVO vo = (MemberVO) session.getAttribute("login"); // 세션에서 로그인 정보 받기
 		if(vo != null) { // 로그인 상태이면
-			Hashtable<String, Object> map = new Hashtable<String, Object>();
 			MsgListResult msgLists = msgService.getAllMsgList(vo.getMember_number());
 			map.put("msgLists",msgLists);
 			ModelAndView mv = new ModelAndView("message/chat","map",map);
@@ -39,7 +43,7 @@ public class MsgController {
 		}
 	}
 	
-	//메시지 상대 선택, 해당 상대와의 메시지 읽음 처리, ajax
+	// 메시지 상대 선택, 해당 상대와의 메시지 읽음 처리, ajax
 	@GetMapping(value="selectChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Hashtable<String, Object> selectChat(HttpSession session, long sender_number) {
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
@@ -49,8 +53,11 @@ public class MsgController {
 		MsgListResult detailLists = msgService.getMsgList(vo.getMember_number(), sender_number);
 		long unread = msgService.msgRead(vo.getMember_number(), sender_number);
    	    // 후기 미작성 산책 검색
-   	    MemberReview walk = msgService.selectRecentWalk(vo.getMember_number(), sender_number); 
+   	    MemberReview walk = msgService.selectRecentWalk(vo.getMember_number(), sender_number);
+   	    String name = msgService.getSenderName(sender_number);
    	    if(walk != null) map.put("walk",walk);
+	    map.put("senderName",msgService.getSenderName(sender_number));
+    	map.put("senderNumber",sender_number); 
 		map.put("msgLists",msgLists); 
 		map.put("detailLists",detailLists);
 		map.put("senderNumber",sender_number); 
@@ -58,9 +65,10 @@ public class MsgController {
 		map.put("myName",vo.getMember_name());
 		session.setAttribute("unread", unread);
 		return map;
+   	    
 	}
 	
-	//메시지 전송, ajax
+	// 메시지 전송, ajax
 	@GetMapping(value="sendChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Hashtable<String, Object> sendChat(HttpSession session, long sender_number, String msg_content) {
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
@@ -80,7 +88,7 @@ public class MsgController {
 		return map;
 	}
 	
-	//메시지 수신 시 1:1 대화창 갱신, ajax
+	// 메시지 수신 시 1:1 대화창 갱신, ajax
 	@GetMapping(value="refreshChat.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public @ResponseBody Hashtable<String, Object> refreshChat(HttpSession session, long sender_number) {
 		Hashtable<String, Object> map = new Hashtable<String, Object>();
@@ -104,6 +112,13 @@ public class MsgController {
 		MemberReview memberReview = msgService.selectRecentWalk(vo.getMember_number(), sender_number);
 		memberReview.setMember_review(content);
 		msgService.writeReview(memberReview, vo.getMember_number());
+	}
+	
+	@GetMapping(value="unreadCheck.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public @ResponseBody void unreadCheck(HttpSession session) {
+		MemberVO vo = (MemberVO) session.getAttribute("login");
+		long unread = msgService.getUnreadMsg(vo.getMember_number());
+		session.setAttribute("unread", unread);
 	}
 	
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import lombok.extern.log4j.Log4j;
 import pet.admin.service.AdminService;
+import pet.admin.service.AdminServiceImpl;
 import pet.admin.vo.MemListResult;
 import pet.admin.vo.MemberWalkChart;
 import pet.admin.vo.Qna;
@@ -25,7 +26,7 @@ import static pet.admin.vo.Options.*;
 @RequestMapping("admin")
 public class AdminController {
 	@Autowired
-	AdminService adminService;
+	AdminServiceImpl adminService;
 	
 
 	@RequestMapping("index.do")

@@ -16,5 +16,5 @@ public interface MessageMapper {
 	MemberReview selectRecentWalk(@Param("member_number") long member_number, @Param("walk_number") long walk_number);
 	void writeReview(MemberReview memberReview);
 	void updateJoin(@Param("walk_idx") long walk_idx, @Param("member_number") long member_number);
-	
+	String getSenderName(long member_number);
 }

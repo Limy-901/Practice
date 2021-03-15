@@ -152,4 +152,11 @@ public class MsgServiceImpl implements MsgService {
 		msgMapper.writeReview(memberReview);
 	}
 
+	// 대화 상대 이름 
+	@Override
+	public String getSenderName(long member_number) {
+		String name = msgMapper.getSenderName(member_number);
+		return name;
+	}
+
 }

@@ -18,4 +18,5 @@ public interface MsgService {
 	long msgRead(long member_number, long sender_number);
 	MemberReview selectRecentWalk(long member_number, long walk_number);
 	void writeReview(MemberReview memberReview, long member_number);
+	String getSenderName(long member_number);
 }

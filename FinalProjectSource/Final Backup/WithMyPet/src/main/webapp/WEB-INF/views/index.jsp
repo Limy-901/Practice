@@ -531,6 +531,7 @@
         </div>
       </div>
     </div>
+    <input id="loginCheck" type="hidden" value="${login.member_name}">
   </footer>
   </section>
  
@@ -642,18 +643,61 @@
   <!-- video popup -->
 <script src="assets/js/jquery.magnific-popup.min.js"></script>
 <script>
+
+// 웹소켓 연결
+var login = $('#loginCheck').val();
+var sender = $('#senNo').val();
+var socket = null;
+if(login != '') connectWS();
+function connectWS(){
+	var url = "ws://localhost:8080/replyEcho";
+	var ws = new WebSocket(url);
+	socket = ws;
+	// 커넥션 연결
+	ws.onopen = function(event){
+		console.log('info : connection opened'+event);
+	 // 메세지 왔을때 (알림 + 목록갱신)
+	 ws.onmessage = function (event){
+		toastr.options = {
+              closeButton: true,
+              progressBar: true,
+              showMethod: 'slideDown',
+              timeOut: 4000
+       };
+       toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
+       refresh(event);
+	 };
+	};
+	ws.onclose = function(event) { 
+		console.log('info : connection closed.');
+		setTimeout(function(){ 
+			connectWS();
+		}, 1000);
+	};
+	ws.onerror = function(event) { console.log('error : '+event); };
+};
+function refresh(event){
+	  var unreadCount = '${unread}';
+	  $('#unreadCount').empty();
+	  if(unreadCount == 0){
+		  $('#msgZone').empty();
+		  html3='<a href="/msg/chat.do"><img src="../assets/images/icon/message.png"></a>';
+		  $('#msgZone').html(html3);
+	  }else{
+		 $('#unreadCount').html(unreadCount);
+	  }
+	  alert($('#senName').val());
+	  window.location.href="#sendBtn"; 
+}
+
   $(document).ready(function () {
     $('.popup-with-zoom-anim').magnificPopup({
       type: 'inline',
-
       fixedContentPos: false,
       fixedBgPos: true,
-
       overflowY: 'auto',
-
       closeBtnInside: true,
       preloader: false,
-
       midClick: true,
       removalDelay: 300,
       mainClass: 'my-mfp-zoom-in'
@@ -661,25 +705,17 @@
 
     $('.popup-with-move-anim').magnificPopup({
       type: 'inline',
-
       fixedContentPos: false,
       fixedBgPos: true,
-
       overflowY: 'auto',
-
       closeBtnInside: true,
       preloader: false,
-
       midClick: true,
       removalDelay: 300,
       mainClass: 'my-mfp-slide-bottom'
     });
   });
-</script>
-<!-- //video popup -->
-
-  <!--/MENU-JS-->
-  <script>
+  
     $(window).on("scroll", function () {
       var scroll = $(window).scrollTop();
 
@@ -689,7 +725,6 @@
         $("#site-header").removeClass("nav-fixed");
       }
     });
-
     //Main navigation Active Class Add Remove
     $(".navbar-toggler").on("click", function () {
       $("header").toggleClass("active");

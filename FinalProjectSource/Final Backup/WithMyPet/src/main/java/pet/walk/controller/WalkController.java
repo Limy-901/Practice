@@ -2,6 +2,8 @@ package pet.walk.controller;
 
 import java.util.Date;
 import java.util.Hashtable;
+
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -32,15 +34,17 @@ import pet.walk.vo.joinVo;
 @RequestMapping("walk")
 
 public class WalkController {
+	
 	@Autowired
 	private WalkServiceImpl walkService;
+	
 	@Autowired(required=false)
 	private Mailer mailer;
 	
 	// 산책 게시판 index
 	@RequestMapping("list.do")
 	public ModelAndView list(HttpSession session, 
-			@RequestParam (defaultValue="0", required=false)int cp,
+	@RequestParam (defaultValue="0", required=false)int cp,
 			String searchType,String keyword) {
 		if(cp == 0) {
 			Object cpObj = session.getAttribute("cp");
@@ -147,6 +151,7 @@ public class WalkController {
 	// 산책 게시글 구체적으로 보기
 	@RequestMapping("blog.do")
 	public ModelAndView walkblog(HttpSession session, HttpServletRequest request, long idx) {
+		MemberVO vo = (MemberVO) session.getAttribute("login");
 		Walk dto = walkService.getWalk(idx);
 		log.info("여기욤"+dto);
 		// 날짜 + 시간 가공
@@ -159,21 +164,36 @@ public class WalkController {
 		// 멤버 + 반려동물 정보
 		Hashtable<String, Object> memberData = walkService.getMemData(dto.getMember_number());
 		MypagePetVO pet = walkService.getCmtPetData(dto.getMember_number());
+		long likeToggle = walkService.checkLikeToggle(idx, vo.getMember_number());
 		map.put("day",day);
 		map.put("time",time);
 		map.put("dto",dto);
 		map.put("memberData",memberData);
 		map.put("pet",pet);
+		if (likeToggle != 0) {
+			log.info("#####like햇음");
+			map.put("likeToggle",likeToggle);
+		}
 		ModelAndView mv = new ModelAndView("walk/walkblog","content",map);
 		return mv;
 	}
 	
 	// 좋아요 버튼, 업데이트
 	@GetMapping(value="like.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public @ResponseBody int like(Long walk_idx,HttpServletResponse response, HttpSession session) {
+	public @ResponseBody int like(Long walk_idx, HttpSession session) {
 		MemberVO memVo = (MemberVO)session.getAttribute("login");
 		joinVo vo = new joinVo(walk_idx,memVo.getMember_number());
 		walkService.addHeart(vo);
+		int likeCount = walkService.getWalkLike(walk_idx);
+		return likeCount;
+	}
+	
+	// 좋아요 취소, 업데이트
+	@GetMapping(value="deleteLike.do", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public @ResponseBody int deleteLike(Long walk_idx, HttpSession session) {
+		MemberVO memVo = (MemberVO)session.getAttribute("login");
+		joinVo vo = new joinVo(walk_idx,memVo.getMember_number());
+		walkService.deleteHeart(vo);
 		int likeCount = walkService.getWalkLike(walk_idx);
 		return likeCount;
 	}

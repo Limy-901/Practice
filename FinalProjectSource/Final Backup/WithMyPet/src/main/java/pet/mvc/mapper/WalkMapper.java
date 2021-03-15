@@ -26,10 +26,12 @@ public interface WalkMapper {
 	long selectByCmtIdx(long cmtIdx);
 	void updateWalkCmt(long cmtIdx);
 	void addHeart(joinVo vo);
+	void deleteHeart(joinVo vo);
 	int getWalkLike(long idx);
 	int checkJoin(joinVo vo);
 	int checkCmt(joinVo vo);
 	MypagePetVO getCmtPetData(long member_number);
 	MemberVO getMemData(long member_number);
 	DetailMemberData getDetailData(long member_number);
+	long checkLikeToggle(@Param("walk_idx") long walk_idx, @Param("member_number") long member_number);
 }

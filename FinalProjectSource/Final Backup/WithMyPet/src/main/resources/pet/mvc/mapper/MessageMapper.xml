@@ -73,5 +73,9 @@
 		MEMBER_REVIEW = 'Y'
 		where (WALK_IDX = #{walk_idx} and MEMBER_NUMBER = #{member_number})
 	</update>
+	
+	<select id="getSenderName" parameterType="long" resultType="String">
+		select MEMBER_NAME from MEMBER where MEMBER_NUMBER = #{member_number}
+	</select>
 
 </mapper>
