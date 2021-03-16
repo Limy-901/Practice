@@ -147,6 +147,7 @@ public class WalkServiceImpl implements WalkService {
 	}
 	
 	// 참여 댓글 수락하기 (2) 수락하기
+	
 	@Override
 	public boolean insertWalkJoin(joinVo vo, long walk_idx) {
 		int flag = walkMapper.checkJoin(vo);

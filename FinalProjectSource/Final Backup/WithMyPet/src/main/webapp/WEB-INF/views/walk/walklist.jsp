@@ -30,6 +30,8 @@
 	<script src="../assets/js/button/dropdown.js"></script>
 	<script src="../assets/js/button/index.js"></script>
 	<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 
 <body>
@@ -404,6 +406,37 @@ function search(){
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     }
+    
+    var login = $('#loginCheck').val();
+    var sender = $('#senNo').val();
+    var socket = null;
+    if(login != '') connectWS();
+    function connectWS(){
+    	var url = "ws://localhost:8080/replyEcho";
+    	var ws = new WebSocket(url);
+    	socket = ws;
+    	// 커넥션 연결
+    	ws.onopen = function(event){
+    		console.log('info : connection opened'+event);
+    	 // 메세지 왔을때 (알림 + 목록갱신)
+    	 ws.onmessage = function (event){
+    		toastr.options = {
+                  closeButton: true,
+                  progressBar: true,
+                  showMethod: 'slideDown',
+                  timeOut: 8000
+           };
+           toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
+    	 };
+    	};
+    	ws.onclose = function(event) { 
+    		console.log('info : connection closed.');
+    		setTimeout(function(){ 
+    			connectWS();
+    		}, 1000);
+    	};
+    	ws.onerror = function(event) { console.log('error : '+event); };
+    };
   </script>
   <!-- /move top -->
 </section>

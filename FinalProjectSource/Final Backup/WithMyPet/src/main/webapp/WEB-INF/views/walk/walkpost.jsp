@@ -16,16 +16,16 @@
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
-    <link href="../assets/css/datepicker/datepicker.min.css" rel="stylesheet" type="text/css" media="all">
-    <script src="../assets/js/datepicker/datepicker.js"></script>
-    <script src="../assets/js/datepicker/datepicker.ko.js"></script>
-
+  <link href="../assets/css/datepicker/datepicker.min.css" rel="stylesheet" type="text/css" media="all">
+  <script src="../assets/js/datepicker/datepicker.js"></script>
+  <script src="../assets/js/datepicker/datepicker.ko.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <link rel="stylesheet" href="../assets/css/walk.css">
   <link rel="stylesheet" href="../assets/css/walkform.css">
   <link rel="stylesheet" href="../assets/css/walkform.min.css">
   <link rel="stylesheet" href="../assets/css/postCard.css">
   <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
-
 	<script src="../assets/js/popper.js"></script>
 	<script src="../assets/js/popper.js.map"></script>
 	<script src="../assets/js/walkform.js"></script>
@@ -682,6 +682,37 @@ function removeAllChildNods(el) {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     }
+    
+    var login = $('#loginCheck').val();
+    var sender = $('#senNo').val();
+    var socket = null;
+    if(login != '') connectWS();
+    function connectWS(){
+    	var url = "ws://localhost:8080/replyEcho";
+    	var ws = new WebSocket(url);
+    	socket = ws;
+    	// 커넥션 연결
+    	ws.onopen = function(event){
+    		console.log('info : connection opened'+event);
+    	 // 메세지 왔을때 (알림 + 목록갱신)
+    	 ws.onmessage = function (event){
+    		toastr.options = {
+                  closeButton: true,
+                  progressBar: true,
+                  showMethod: 'slideDown',
+                  timeOut: 8000
+           };
+           toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
+    	 };
+    	};
+    	ws.onclose = function(event) { 
+    		console.log('info : connection closed.');
+    		setTimeout(function(){ 
+    			connectWS();
+    		}, 1000);
+    	};
+    	ws.onerror = function(event) { console.log('error : '+event); };
+    };
   </script>
   <!-- /move top -->
 </section>

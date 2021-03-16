@@ -23,6 +23,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" href="../assets/css/blog.css">
   <link rel="stylesheet" href="../assets/css/postCard.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	<!-- sweetAlert -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
@@ -815,6 +817,88 @@ function walkJoinOk(){
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     }
+    
+    var login = $('#loginCheck').val();
+    var sender = $('#senNo').val();
+    var socket = null;
+    if(login != '') connectWS();
+    function connectWS(){
+    	var url = "ws://localhost:8080/replyEcho";
+    	var ws = new WebSocket(url);
+    	socket = ws;
+    	// 커넥션 연결
+    	ws.onopen = function(event){
+    		console.log('info : connection opened'+event);
+    	 // 메세지 왔을때 (알림 + 목록갱신)
+    	 ws.onmessage = function (event){
+    		toastr.options = {
+                  closeButton: true,
+                  progressBar: true,
+                  showMethod: 'slideDown',
+                  timeOut: 8000
+           };
+           toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
+    	 };
+    	};
+    	ws.onclose = function(event) { 
+    		console.log('info : connection closed.');
+    		setTimeout(function(){ 
+    			connectWS();
+    		}, 1000);
+    	};
+    	ws.onerror = function(event) { console.log('error : '+event); };
+    };
+    
+    
+      $(document).ready(function () {
+        $('.popup-with-zoom-anim').magnificPopup({
+          type: 'inline',
+          fixedContentPos: false,
+          fixedBgPos: true,
+          overflowY: 'auto',
+          closeBtnInside: true,
+          preloader: false,
+          midClick: true,
+          removalDelay: 300,
+          mainClass: 'my-mfp-zoom-in'
+        });
+
+        $('.popup-with-move-anim').magnificPopup({
+          type: 'inline',
+          fixedContentPos: false,
+          fixedBgPos: true,
+          overflowY: 'auto',
+          closeBtnInside: true,
+          preloader: false,
+          midClick: true,
+          removalDelay: 300,
+          mainClass: 'my-mfp-slide-bottom'
+        });
+      });
+      
+        $(window).on("scroll", function () {
+          var scroll = $(window).scrollTop();
+
+          if (scroll >= 80) {
+            $("#site-header").addClass("nav-fixed");
+          } else {
+            $("#site-header").removeClass("nav-fixed");
+          }
+        });
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function () {
+          $("header").toggleClass("active");
+        });
+        $(document).on("ready", function () {
+          if ($(window).width() > 991) {
+            $("header").removeClass("active");
+          }
+          $(window).on("resize", function () {
+            if ($(window).width() > 991) {
+              $("header").removeClass("active");
+            }
+          });
+        });
   </script>
   <!-- /move top -->
 </section>

@@ -786,13 +786,21 @@ function writeReview(){
 				  socket.send(socketMsg);
 			  }
 			  var html2 = '';
-			  
-			  html2 += '<div class="input-group" style="margin-bottom:5%;">';
-			  html2 += '<input id="msgInput" style="font-family: "Spoqa Han Sans Neo";" class="form-control border no-shadow no-rounded" placeholder="상대에게 보낼 메시지를 입력해주세요.">';
-			  html2 += '<span class="input-group-btn">';
-      		  html2 += '<button id="sendReview" onclick="sendReview('+map.senderNumber+')" style="font-family: "Spoqa Han Sans Neo";" class="ui blue button" type="button">산책 후기 작성</button>';
-      		  html2 += '<button class="ui blue button" style="margin:auto; font-size:1.0rem; font-family: "Spoqa Han Sans Neo";">팔로우</button></span></div>';
-
+			  if(map.walk != '' && map.walk != null){
+				  html2 += '<input type="hidden" id="walkIdx" value="'+map.walk.walk_idx+'">';
+		      		html2 += '<div id="walkEventMsg" class="input-group" style="margin-bottom:5%;">';
+		  			html2 += '<div class="col-sm-12">';
+					html2 += '<div class="alert fade alert-simple alert-warning alert-dismissible text-left font__family-montserrat ';
+					html2 += 'font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">';
+					html2 += '<button type="button" style="padding:0.4rem 1.25rem;" class="close font__size-18" data-dismiss="alert">';
+					html2 += '<span aria-hidden="true"><i class="fa fa-times blue-cross"></i></span>';
+					html2 += '<span class="sr-only">Close</span></button>';
+					html2 += '<i class="start-icon  fa fa-info-circle faa-shake animated"></i>';
+					html2 += '<strong>'+map.walk.day+", <b>"+map.walk.walk_location+"</b>에서 함께 산책했어요!"+'</strong>';
+					html2 += '<span class="input-group-btn" ><br>';
+					html2 += '<button onclick="writeReview('+map.senderNumber+')" style="float:right; margin-top:-3.9%; padding-right:2%; padding-left:2%; padding-top:1.2%; padding-bottom:1.2%;" class="ui yellow button" type="button">후기 작성</button>';
+					html2 += '</span></div></div></div>';
+			  }
 			  for(var i = 0; i < map.detailLists.chatList.length; i++) {
 				  if(map.detailLists.chatList[i].sender_number != map.senderNumber){ // 사용자가 발신자일때
 					  html2 += '<li class="left clearfix">';

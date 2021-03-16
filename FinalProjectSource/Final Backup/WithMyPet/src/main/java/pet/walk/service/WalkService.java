@@ -1,14 +1,13 @@
 package pet.walk.service;
 
 import java.util.Hashtable;
-
-import pet.member.vo.MemberVO;
 import pet.member.vo.MypagePetVO;
 import pet.walk.vo.CmtVo;
 import pet.walk.vo.Comment;
 import pet.walk.vo.Walk;
 import pet.walk.vo.WalkListResult;
 import pet.walk.vo.joinVo;
+
 
 public interface WalkService {
 	void insertWalk(Walk dto);

@@ -14,10 +14,11 @@
    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/icon/footprint16.png">
    <link href="//fonts.googleapis.com/css2?family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
-   <!-- google fonts --> 
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="assets/css/main.css">
-  <!-- Template CSS -->
+   <link rel="stylesheet" href="assets/plugins/toastr/css/toastr.min.css">
+   <link rel="stylesheet" href="assets/css/main.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 </head>
 
 <body>
@@ -643,7 +644,6 @@
   <!-- video popup -->
 <script src="assets/js/jquery.magnific-popup.min.js"></script>
 <script>
-
 // 웹소켓 연결
 var login = $('#loginCheck').val();
 var sender = $('#senNo').val();
@@ -662,7 +662,7 @@ function connectWS(){
               closeButton: true,
               progressBar: true,
               showMethod: 'slideDown',
-              timeOut: 4000
+              timeOut: 8000
        };
        toastr.success('메시지 알림', event.data+' 님이 메시지를 보냈습니다!');
        refresh(event);
@@ -689,7 +689,6 @@ function refresh(event){
 	  alert($('#senName').val());
 	  window.location.href="#sendBtn"; 
 }
-
   $(document).ready(function () {
     $('.popup-with-zoom-anim').magnificPopup({
       type: 'inline',
@@ -740,8 +739,6 @@ function refresh(event){
       });
     });
   </script>
-  <!--//MENU-JS-->
-
   <script src="assets/js/bootstrap.min.js"></script>
 
 </body>
