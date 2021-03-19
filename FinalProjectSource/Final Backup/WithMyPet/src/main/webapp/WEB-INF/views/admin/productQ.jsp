@@ -8,9 +8,9 @@
 <meta charset="UTF-8">
 <title>:: 관리자 :: With My Pet</title>
 <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"></script>
+  <link rel="stylesheet" href="../assets/plugins/sweetalert2/dis/sweetalert2.min.css"/>
+  <script src="../assets/plugins/jquery/jquery.min.js"></script>
+  <script src="../assets/plugins/sweetalert2/dis/sweetalert2.all.js"></script>
 
 
 </head>
@@ -407,11 +407,15 @@ function checkBoard(idx){
     <!--**********************************
         Scripts
     ***********************************-->
+     <script src="../assets/js/bootstrap.min.js"></script>
+      <script src="../assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
     <script src="../assets/plugins/common/common.min.js"></script>
     <script src="../assets/js/admin/custom.min.js"></script>
     <script src="../assets/js/admin/settings.js"></script>
     <script src="../assets/js/admin/gleek.js"></script>
     <script src="../assets/js/admin/styleSwitcher.js"></script>
+    
+     
 
 </body>
 </html>
