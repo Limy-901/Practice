@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LimyApp.iml" filepath="$PROJECT_DIR$/.idea/modules/LimyApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Data/LimyApp.Data.iml" filepath="$PROJECT_DIR$/.idea/modules/Data/LimyApp.Data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/LimyApp.Domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/LimyApp.Domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Presentation/LimyApp.Presentation.iml" filepath="$PROJECT_DIR$/.idea/modules/Presentation/LimyApp.Presentation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LimyApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LimyApp.app.iml" />
+    </modules>
+  </component>
+</project>
