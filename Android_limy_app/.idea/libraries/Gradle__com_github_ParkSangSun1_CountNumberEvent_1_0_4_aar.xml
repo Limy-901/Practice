@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.ParkSangSun1:CountNumberEvent:1.0.4@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3e1d8995890c4650277c90a31c0227fe/transformed/CountNumberEvent-1.0.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3e1d8995890c4650277c90a31c0227fe/transformed/CountNumberEvent-1.0.4/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3e1d8995890c4650277c90a31c0227fe/transformed/CountNumberEvent-1.0.4/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.ParkSangSun1/CountNumberEvent/1.0.4/9414337b5765473acf044562741950d5849327ec/CountNumberEvent-1.0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

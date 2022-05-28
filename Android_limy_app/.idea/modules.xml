@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Android_limy_app.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/Android_limy_app.buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LimyApp.iml" filepath="$PROJECT_DIR$/.idea/modules/LimyApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Data/LimyApp.Data.iml" filepath="$PROJECT_DIR$/.idea/modules/Data/LimyApp.Data.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/LimyApp.Domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/LimyApp.Domain.iml" />
