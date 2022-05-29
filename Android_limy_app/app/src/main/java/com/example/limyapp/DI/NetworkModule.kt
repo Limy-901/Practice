@@ -10,6 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+
+/**
+ * 네트워크를 위한 모듈
+ */
+
 @Module
 @InstallIn(Singleton::class)
 object NetworkModule {

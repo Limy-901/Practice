@@ -10,6 +10,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
+
+/**
+ * Databinding 초기 세팅 & 불필요한 코드를 단축하기 위한 Base 코드
+ * onCreateView, onViewCreated 기본 메소드가 포함
+ */
+
+
 abstract class BaseFragment<B : ViewDataBinding>(
     @LayoutRes val layoutId: Int
 ) : Fragment() {
