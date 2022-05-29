@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="50dp"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="30dp">
 
@@ -28,8 +28,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="남성분의 성함을 입력해주세요"
-                android:textColor="@color/black"
+                android:text="Employee"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/mid_grey"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -37,7 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="이름을 입력하세요." />
+                android:textColor="@color/light_grey"
+                android:text="Employee's Name2" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -46,9 +48,10 @@
             android:background="@drawable/name_setting_btn_frame"
             android:gravity="center"
             android:onClick="@{fragment.resultBtnClick}"
+            android:padding="10dp"
             android:text="궁합 보기"
             android:textColor="@color/white"
-            android:padding="10dp"
+            android:layout_marginBottom="30dp"
             android:textStyle="bold"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="fly" />
-                            <entry key="sourceFile" value="C:\Users\임연지\Downloads\undraw_i_can_fly_-7-egl.svg" />
+                            <entry key="outputName" value="ic_imb_logo_green_white" />
+                            <entry key="sourceFile" value="C:\Users\임연지\Desktop\imb_logo_green_white.svg" />
                           </map>
                         </option>
                       </PersistentState>
