@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Limy/Android_limy_app/Presentation/src/main/res/layout/activity_main.xml" value="0.2915601023017903" />
+        <entry key="..\:/Limy/Android_limy_app/Presentation/src/main/res/layout/activity_splash.xml" value="0.3619791666666667" />
+        <entry key="..\:/Limy/Android_limy_app/Presentation/src/main/res/layout/fragment_main.xml" value="0.2915601023017903" />
+        <entry key="..\:/Limy/Android_limy_app/Presentation/src/main/res/layout/fragment_man_name.xml" value="0.3619791666666667" />
         <entry key="..\:/Project/Practice/Android_limy_app/Presentation/src/main/res/drawable/ic_imb_logo_green.xml" value="0.193" />
         <entry key="..\:/Project/Practice/Android_limy_app/Presentation/src/main/res/drawable/ic_imb_logo_green_white.xml" value="0.193" />
         <entry key="..\:/Project/Practice/Android_limy_app/Presentation/src/main/res/drawable/ic_skylark_logo_0.xml" value="0.193" />
