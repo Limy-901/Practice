@@ -19,6 +19,7 @@ import androidx.navigation.NavController
 import com.plcoding.cleanarchitecturenoteapp.feature_note.presentation.notes.components.NoteItem
 import com.plcoding.cleanarchitecturenoteapp.feature_note.presentation.notes.components.OrderSection
 import com.plcoding.cleanarchitecturenoteapp.feature_note.presentation.util.Screen
+//import com.plcoding.cleanarchitecturenoteapp.feature_note.presentation.util.Screen
 import kotlinx.coroutines.launch
 
 
@@ -42,7 +43,7 @@ fun NotesScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { // onclick 이벤트가 발생하면 노트 추가 화면으로 이동할것임
-//                    navController.navigate(Screen.AddEditNoteScreen.route)
+                    navController.navigate(Screen.AddEditNoteScreen.route)
                 },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
@@ -101,10 +102,10 @@ fun NotesScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { // 노트아이템을 클릭하면 이벤트 발생시킴 (편집기능으로 이동)
-//                                navController.navigate(
-//                                    Screen.AddEditNoteScreen.route +
-//                                            "?noteId=${note.id}&noteColor=${note.color}"
-//                                )
+                                navController.navigate(
+                                    Screen.AddEditNoteScreen.route +
+                                            "?noteId=${note.id}&noteColor=${note.color}"
+                                )
                             },
                         onDeleteClick = {
                             // 뷰모델에서 delete 유스케이스 실행
